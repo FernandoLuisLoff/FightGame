@@ -10,6 +10,14 @@ import java.util.ArrayList;
 public class BalaoController {
     private ArrayList<Balao> baloes;
 
+    public ArrayList<Balao> getBaloes() {
+        return baloes;
+    }
+
+    public void setBaloes(ArrayList<Balao> baloes) {
+        this.baloes = baloes;
+    }
+
     public void init() {
         if (baloes == null) {
             baloes = new ArrayList<Balao>(4);
@@ -33,13 +41,7 @@ public class BalaoController {
     public void render(SpriteBatch batch) {
         for (Balao balao : baloes) {
             update(balao);
-            batch.draw(
-                balao.getImg(),
-                balao.getImgX() - balao.getWidthImg() / 2,
-                balao.getImgY() - balao.getHeightImg() / 2,
-                balao.getWidthImg(),
-                balao.getHeightImg()
-            );
+            batch.draw( balao.getImg(), balao.getImgX() - balao.getWidthImg() / 2, balao.getImgY() - balao.getHeightImg() / 2, balao.getWidthImg(), balao.getHeightImg() );
         }
     }
 

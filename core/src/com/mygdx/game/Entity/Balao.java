@@ -4,17 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Balao {
-
-    public Balao(Texture img, int widthImg, int heightImg, float imgX, float imgY, float speed) {
-        this.img = img;
-        this.widthImg = widthImg;
-        this.heightImg = heightImg;
-        this.initialImgX = imgX;
-        this.initialImgY = imgY;
-        this.imgX = imgX;
-        this.imgY = imgY;
-        this.speed = speed;
-    }
     Texture img;
 
     int widthImg;
@@ -94,6 +83,17 @@ public class Balao {
 
     public boolean isOffScreen() {
         return imgY > Gdx.graphics.getHeight() + 100;
+    }
+
+    public Balao(Texture img, int widthImg, int heightImg, float imgX, float imgY, float speed) {
+        this.img = img;
+        this.widthImg = widthImg;
+        this.heightImg = heightImg;
+        this.initialImgX = imgX;
+        this.initialImgY = imgY;
+        this.imgX = imgX;
+        this.imgY = imgY;
+        this.speed = speed;
     }
 
     public void dispose() {
