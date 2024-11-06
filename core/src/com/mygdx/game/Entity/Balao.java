@@ -1,13 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Balao {
 
     public Balao(Texture img, int widthImg, int heightImg, float imgX, float imgY, float speed) {
-        this.batch = new SpriteBatch();
         this.img = img;
         this.widthImg = widthImg;
         this.heightImg = heightImg;
@@ -17,8 +15,6 @@ public class Balao {
         this.imgY = imgY;
         this.speed = speed;
     }
-
-    SpriteBatch batch;
     Texture img;
 
     int widthImg;
@@ -29,6 +25,8 @@ public class Balao {
 
     float initialImgX;
     float initialImgY;
+
+    float speed;
 
     public float getInitialImgX() {
         return initialImgX;
@@ -44,16 +42,6 @@ public class Balao {
 
     public void setInitialImgY(float initialImgY) {
         this.initialImgY = initialImgY;
-    }
-
-    float speed;
-
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
-    public void setBatch(SpriteBatch batch) {
-        this.batch = batch;
     }
 
     public Texture getImg() {
@@ -104,29 +92,11 @@ public class Balao {
         this.speed = speed;
     }
 
-    public void calcPosition() {
-        if (!isOffScreen()) {
-            imgY += speed;
-        } else {
-            imgX = initialImgX;
-            imgY = initialImgY;
-        }
-    }
-
     public boolean isOffScreen() {
         return imgY > Gdx.graphics.getHeight() + 100;
     }
 
-    public void draw() {
-        calcPosition();
-
-        batch.begin();
-        batch.draw(img, imgX - widthImg/2, imgY - heightImg/2, widthImg, heightImg);
-        batch.end();
-    }
-
     public void dispose() {
-        batch.dispose();
         img.dispose();
     }
 }

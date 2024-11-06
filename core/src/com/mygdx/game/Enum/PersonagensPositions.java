@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Enum;
 
 public enum PersonagensPositions {
     STOP_RIGHT,

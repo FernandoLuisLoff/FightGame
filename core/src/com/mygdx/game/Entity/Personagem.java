@@ -1,36 +1,87 @@
-package com.mygdx.game;
+package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Enum.PersonagensPositions;
 
 import java.util.EnumSet;
 
 public class Personagem {
-    SpriteBatch batch;
-    Texture img;
+    public static Personagem self;
+    private Texture img;
 
-    int widthImg;
-    int heightImg;
+    private int widthImg;
+    private int upperHeightImg;
 
-    float imgX;
-    float imgY;
+    private int downHeightImg;
 
-    PersonagensPositions position;
+    private float imgX;
+    private float imgY;
 
-    float speed = 0;
+    private PersonagensPositions position;
+
+    private float speed = 0;
 
     // Atributos para o pulo
-    float jumpVelocity = 0;
-    float gravity = -1f;
-    float groundY;
+    private float jumpVelocity = 0;
+    private float gravity = -1f;
+    private float groundY;
 
-    public float getSpeed() {
-        return speed;
+    public static Personagem getSelf() {
+        return self;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public static void setSelf(Personagem self) {
+        Personagem.self = self;
+    }
+
+    public Texture getImg() {
+        return img;
+    }
+
+    public void setImg(Texture img) {
+        this.img = img;
+    }
+
+    public int getWidthImg() {
+        return widthImg;
+    }
+
+    public void setWidthImg(int widthImg) {
+        this.widthImg = widthImg;
+    }
+
+    public int getUpperHeightImg() {
+        return upperHeightImg;
+    }
+
+    public void setUpperHeightImg(int upperHeightImg) {
+        this.upperHeightImg = upperHeightImg;
+    }
+
+    public int getDownHeightImg() {
+        return downHeightImg;
+    }
+
+    public void setDownHeightImg(int downHeightImg) {
+        this.downHeightImg = downHeightImg;
+    }
+
+    public float getImgX() {
+        return imgX;
+    }
+
+    public void setImgX(float imgX) {
+        this.imgX = imgX;
+    }
+
+    public float getImgY() {
+        return imgY;
+    }
+
+    public void setImgY(float imgY) {
+        this.imgY = imgY;
     }
 
     public PersonagensPositions getPosition() {
@@ -39,6 +90,14 @@ public class Personagem {
 
     public void setPosition(PersonagensPositions position) {
         this.position = position;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     public float getJumpVelocity() {
@@ -65,63 +124,16 @@ public class Personagem {
         this.groundY = groundY;
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
-    public void setBatch(SpriteBatch batch) {
-        this.batch = batch;
-    }
-
-    public Texture getImg() {
-        return img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
-    }
-
-    public int getWidthImg() {
-        return widthImg;
-    }
-
-    public void setWidthImg(int widthImg) {
-        this.widthImg = widthImg;
-    }
-
-    public int getHeightImg() {
-        return heightImg;
-    }
-
-    public void setHeightImg(int heightImg) {
-        this.heightImg = heightImg;
-    }
-
-    public float getImgX() {
-        return imgX;
-    }
-
-    public void setImgX(float imgX) {
-        this.imgX = imgX;
-    }
-
-    public float getImgY() {
-        return imgY;
-    }
-
-    public void setImgY(float imgY) {
-        this.imgY = imgY;
-    }
-
     public Personagem(PersonagensPositions position, int widthImg, int heightImg, float imgX, float imgY) {
         this.position = position;
-        this.batch = new SpriteBatch();
         this.img = getImgPosition();
         this.widthImg = widthImg;
-        this.heightImg = heightImg;
+        this.upperHeightImg = heightImg;
+        this.downHeightImg = heightImg/2;
         this.imgX = imgX;
         this.imgY = imgY;
         this.groundY = imgY;
+        self = this;
     }
 
     public boolean isRight() {
@@ -262,13 +274,19 @@ public class Personagem {
     public void draw() {
         calcPosition();
 
-        batch.begin();
-        batch.draw(img, imgX - widthImg/2, imgY - heightImg/2, widthImg, heightImg);
-        batch.end();
+        Integer heightImg;
+        if (isDowning()) {
+            heightImg = downHeightImg;
+        } else {
+            heightImg = upperHeightImg;
+        }
+
+//        batch.begin();
+//        batch.draw(img, imgX - widthImg/2, imgY - upperHeightImg/2, widthImg, heightImg);
+//        batch.end();
     }
 
     public void dispose() {
-        batch.dispose();
         img.dispose();
     }
 }
