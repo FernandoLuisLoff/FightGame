@@ -96,7 +96,7 @@ public class Balao {
         this.speed = speed;
     }
 
-    public void dispose() {
-        img.dispose();
+    public boolean hit(float x, float y) {
+        return ( ( x > imgX && x < imgX + widthImg ) && (y > imgY && y < imgY + heightImg ) );
     }
 }
