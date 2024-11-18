@@ -6,10 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Balao;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BalaoController {
+    private GameAssetManager gameAssetManager;
+
     private ArrayList<Balao> baloes;
 
     public ArrayList<Balao> getBaloes() {
@@ -22,19 +26,18 @@ public class BalaoController {
 
     HadoukenController hadoukenController;
 
-    Texture texture = new Texture("balao/balao.png");
-
-    public void init(HadoukenController hadoukenController) {
+    public void init(HadoukenController hadoukenController, GameAssetManager gameAssetManager) {
+        this.gameAssetManager = gameAssetManager;
         this.hadoukenController = hadoukenController;
 
         if (baloes == null) {
             baloes = new ArrayList<Balao>(4);
         }
 
-        baloes.add( new Balao( texture, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, -100, 4) );
-        baloes.add( new Balao( texture, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5, -50, 3) );
-        baloes.add( new Balao( texture, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 3, -80, 5) );
-        baloes.add( new Balao( texture, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 6, -90, 4) );
+        baloes.add( new Balao( gameAssetManager, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, -100, 4) );
+        baloes.add( new Balao( gameAssetManager, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 5, -50, 3) );
+        baloes.add( new Balao( gameAssetManager, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 3, -80, 5) );
+        baloes.add( new Balao( gameAssetManager, 70, 120, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 6, -90, 4) );
     }
 
     public boolean testHit(Balao balao) {
@@ -61,18 +64,16 @@ public class BalaoController {
     }
 
     public void render(SpriteBatch batch) {
-        for (Balao balao : baloes) {
+        Iterator<Balao> iterator = baloes.iterator();
+        while (iterator.hasNext()) {
+            Balao balao = iterator.next();
             update(balao);
 
             if (!testHit(balao)) {
                 batch.draw(balao.getImg(), balao.getImgX() - balao.getWidthImg() / 2, balao.getImgY() - balao.getHeightImg() / 2, balao.getWidthImg(), balao.getHeightImg());
             } else {
-               // baloes.remove(balao);
+                iterator.remove();
             }
         }
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 }

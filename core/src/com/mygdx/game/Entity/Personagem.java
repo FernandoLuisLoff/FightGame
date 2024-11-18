@@ -5,14 +5,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.Controller.HadoukenController;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 
 import java.util.EnumSet;
 
 public class Personagem {
-    public static Personagem self;
+    private final GameAssetManager gameAssetManager;
+
     private String pathSprites;
-    private Texture img;
     private PersonagemInputKeys inputKeys;
 
     private float widthImg;
@@ -32,14 +33,6 @@ public class Personagem {
     private float gravity = -1f;
     private float groundY;
 
-    public static Personagem getSelf() {
-        return self;
-    }
-
-    public static void setSelf(Personagem self) {
-        Personagem.self = self;
-    }
-
     public String getPathSprites() {
         return pathSprites;
     }
@@ -50,14 +43,6 @@ public class Personagem {
 
     public void setDownHeightImg(float downHeightImg) {
         this.downHeightImg = downHeightImg;
-    }
-
-    public Texture getImg() {
-        return img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
     }
 
     public PersonagemInputKeys getInputKeys() {
@@ -148,48 +133,47 @@ public class Personagem {
         this.groundY = groundY;
     }
 
-    public Personagem(String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(GameAssetManager gameAssetManager, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+        this.gameAssetManager = gameAssetManager;
         this.pathSprites = pathSprites;
         this.position = position;
         this.inputKeys = inputKeys;
-        this.img = getImgPosition();
         this.widthImg = widthImg;
         this.upperHeightImg = heightImg;
         this.downHeightImg = heightImg/2;
         this.imgX = imgX;
         this.imgY = imgY;
         this.groundY = imgY;
-        self = this;
     }
 
-    public Texture getImgPosition() {
+    public Texture getImg() {
         switch (position) {
             case STOP_RIGHT:
-                return new Texture(pathSprites + "/stop_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/stop_right.png", Texture.class);
             case STOP_LEFT:
-                return new Texture(pathSprites + "/stop_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/stop_left.png", Texture.class);
             case MOVE_RIGHT:
-                return new Texture(pathSprites + "/move_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/move_right.png", Texture.class);
             case MOVE_LEFT:
-                return new Texture(pathSprites + "/move_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/move_left.png", Texture.class);
             case JUMP_RIGHT:
-                return new Texture(pathSprites + "/jump_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/jump_right.png", Texture.class);
             case JUMP_LEFT:
-                return new Texture(pathSprites + "/jump_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/jump_left.png", Texture.class);
             case JUMP_MOVE_RIGHT:
-                return new Texture(pathSprites + "/jump_move_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/jump_move_right.png", Texture.class);
             case JUMP_MOVE_LEFT:
-                return new Texture(pathSprites + "/jump_move_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/jump_move_left.png", Texture.class);
             case DOWN_RIGHT:
-                return new Texture(pathSprites + "/down_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/down_right.png", Texture.class);
             case DOWN_LEFT:
-                return new Texture(pathSprites + "/down_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/down_left.png", Texture.class);
             case PUNCH_RIGHT:
-                return new Texture(pathSprites + "/punch_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/punch_right.png", Texture.class);
             case PUNCH_LEFT:
-                return new Texture(pathSprites + "/punch_left.png");
+                return gameAssetManager.getManager().get(pathSprites + "/punch_left.png", Texture.class);
             default:
-                return new Texture(pathSprites + "/stop_right.png");
+                return gameAssetManager.getManager().get(pathSprites + "/stop_right.png", Texture.class);
         }
     }
 
@@ -200,7 +184,6 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_MOVE_RIGHT;
             }
-            updateImg(getImgPosition());
             speed = 5;
         }
     }
@@ -212,7 +195,6 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_RIGHT ;
             }
-            updateImg(getImgPosition());
             speed = 0;
         }
     }
@@ -224,7 +206,6 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_MOVE_LEFT;
             }
-            updateImg(getImgPosition());
             speed = -5;
         }
     }
@@ -236,7 +217,6 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_LEFT;
             }
-            updateImg(getImgPosition());
             speed = 0;
         }
     }
@@ -253,8 +233,6 @@ public class Personagem {
                 position = PersonagensPositions.JUMP_MOVE_LEFT;
             }
 
-            updateImg(getImgPosition());
-
             jumpVelocity = 25;
         }
     }
@@ -267,7 +245,6 @@ public class Personagem {
             } else if (isLeft()) {
                 position = PersonagensPositions.DOWN_LEFT;
             }
-            updateImg(getImgPosition());
         }
     }
 
@@ -289,7 +266,6 @@ public class Personagem {
             } else if (isLeft()) {
                 position = PersonagensPositions.PUNCH_LEFT;
             }
-            updateImg(getImgPosition());
         }
     }
 
@@ -300,7 +276,6 @@ public class Personagem {
             } else if (isLeft()) {
                 position = PersonagensPositions.STOP_LEFT;
             }
-            updateImg(getImgPosition());
         }
     }
 
@@ -351,14 +326,5 @@ public class Personagem {
 
     public boolean isOffScreen() {
         return imgX > Gdx.graphics.getWidth() || imgX < 0;
-    }
-
-    public void updateImg(Texture newImg) {
-        img.dispose();
-        img = newImg;
-    }
-
-    public void dispose() {
-        img.dispose();
     }
 }

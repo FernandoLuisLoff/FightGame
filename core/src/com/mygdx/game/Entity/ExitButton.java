@@ -3,21 +3,14 @@ package com.mygdx.game.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 
 public class ExitButton {
-    private Texture img;
+    private final GameAssetManager gameAssetManager;
     private int imgX;
     private int imgY;
     private int buttonWidth;
     private int buttonHeight;
-
-    public Texture getImg() {
-        return img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
-    }
 
     public int getImgX() {
         return imgX;
@@ -51,8 +44,8 @@ public class ExitButton {
         this.buttonHeight = buttonHeight;
     }
 
-    public ExitButton(Texture img, int buttonWidth, int buttonHeight) {
-        this.img = img;
+    public ExitButton(GameAssetManager gameAssetManager, int buttonWidth, int buttonHeight) {
+        this.gameAssetManager = gameAssetManager;
         this.buttonWidth = buttonWidth;
         this.buttonHeight = buttonHeight;
 
@@ -61,10 +54,7 @@ public class ExitButton {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(img, imgX, imgY, buttonWidth, buttonHeight);
+        batch.draw( gameAssetManager.getManager().get("background/exit.png", Texture.class), imgX, imgY, buttonWidth, buttonHeight );
     }
 
-    public void dispose() {
-        img.dispose();
-    }
 }

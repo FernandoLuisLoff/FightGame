@@ -5,11 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.PersonagensPositions;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 
 import java.util.ArrayList;
 
 public class PersonagemController {
+    private GameAssetManager gameAssetManager;
+
     private ArrayList<Personagem> personagens;
 
     public ArrayList<Personagem> getPersonagens() {
@@ -20,7 +23,9 @@ public class PersonagemController {
         this.personagens = personagens;
     }
 
-    public void init() {
+    public void init(GameAssetManager gameAssetManager) {
+        this.gameAssetManager = gameAssetManager;
+
         if (personagens == null) {
             personagens = new ArrayList<Personagem>(2);
         }
@@ -29,10 +34,10 @@ public class PersonagemController {
         float heightImg = 420;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( "player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.gameAssetManager, "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( "player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
     }
 
     public void update(Personagem personagem) {
@@ -61,7 +66,6 @@ public class PersonagemController {
                 } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_LEFT) {
                     personagem.setPosition(PersonagensPositions.MOVE_LEFT);
                 }
-                personagem.updateImg(personagem.getImgPosition());
                 personagem.setJumpVelocity(0);
             }
         }
@@ -79,12 +83,6 @@ public class PersonagemController {
             }
 
             batch.draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
-        }
-    }
-
-    public void dispose() {
-        for (Personagem personagem : personagens) {
-            personagem.dispose();
         }
     }
 }

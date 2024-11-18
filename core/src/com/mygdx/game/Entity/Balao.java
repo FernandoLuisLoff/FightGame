@@ -2,9 +2,10 @@ package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 
 public class Balao {
-    Texture img;
+    private final GameAssetManager gameAssetManager;
 
     int widthImg;
     int heightImg;
@@ -31,14 +32,6 @@ public class Balao {
 
     public void setInitialImgY(float initialImgY) {
         this.initialImgY = initialImgY;
-    }
-
-    public Texture getImg() {
-        return img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
     }
 
     public int getWidthImg() {
@@ -85,8 +78,8 @@ public class Balao {
         return imgY > Gdx.graphics.getHeight() + 100;
     }
 
-    public Balao(Texture img, int widthImg, int heightImg, float imgX, float imgY, float speed) {
-        this.img = img;
+    public Balao( GameAssetManager gameAssetManager, int widthImg, int heightImg, float imgX, float imgY, float speed) {
+        this.gameAssetManager = gameAssetManager;
         this.widthImg = widthImg;
         this.heightImg = heightImg;
         this.initialImgX = imgX;
@@ -94,6 +87,10 @@ public class Balao {
         this.imgX = imgX;
         this.imgY = imgY;
         this.speed = speed;
+    }
+
+    public Texture getImg() {
+        return gameAssetManager.getManager().get("balao/balao.png", Texture.class);
     }
 
     public boolean hit(float x, float y) {

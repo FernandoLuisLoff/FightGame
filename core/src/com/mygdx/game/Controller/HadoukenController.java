@@ -1,15 +1,19 @@
 package com.mygdx.game.Controller;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.HadoukenPositions;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class HadoukenController {
+    private GameAssetManager gameAssetManager;
+
     private ArrayList<Hadouken> hadoukens;
 
     public ArrayList<Hadouken> getHadoukens() {
@@ -20,14 +24,16 @@ public class HadoukenController {
         this.hadoukens = hadoukens;
     }
 
-    public void init() {
+    public void init(GameAssetManager gameAssetManager) {
+        this.gameAssetManager = gameAssetManager;
+
         if (hadoukens == null) {
             hadoukens = new ArrayList<Hadouken>();
         }
     }
 
     public void newHadouken(HadoukenPositions hadoukenPositions, Float imgX, Float imgY) {
-        hadoukens.add( new Hadouken( hadoukenPositions, 80, 80, imgX, imgY, 10));
+        hadoukens.add( new Hadouken( gameAssetManager, hadoukenPositions, 80, 80, imgX, imgY, 10));
     }
 
     public void update(Hadouken hadouken) {
@@ -46,15 +52,8 @@ public class HadoukenController {
                 update(hadouken);
                 batch.draw( hadouken.getImg(), hadouken.getImgX() - hadouken.getWidthImg() / 2, hadouken.getImgY() - hadouken.getHeightImg() / 2, hadouken.getWidthImg(), hadouken.getHeightImg() );
             } else {
-                hadouken.dispose();
                 iterator.remove();
             }
-        }
-    }
-
-    public void dispose() {
-        for (Hadouken hadouken : hadoukens) {
-            hadouken.dispose();
         }
     }
 }

@@ -8,11 +8,13 @@ import com.mygdx.game.Controller.BalaoController;
 import com.mygdx.game.Controller.HadoukenController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.InputProcessor;
 
 public class MyGdxGame extends ApplicationAdapter {
+	private final GameAssetManager gameAssetManager = new GameAssetManager();
+
 	private SpriteBatch batch;
-	private Texture background;
 
 	private ExitButton exitButton;
 	private final PersonagemController  personagemController = new PersonagemController();
@@ -21,15 +23,15 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		gameAssetManager.init();
 
 		batch = new SpriteBatch();
-		background = new Texture("background/background.jpg");
-		exitButton = new ExitButton( new Texture("background/exit.png"), 100, 100 );
 
-		personagemController.init();
-		hadoukenController.init();
-		balaoController.init();
+		exitButton = new ExitButton( gameAssetManager, 100, 100 );
+
+		personagemController.init(gameAssetManager);
+		hadoukenController.init(gameAssetManager);
+		balaoController.init(hadoukenController, gameAssetManager);
 
 		InputProcessor personagemInputProcessor = new InputProcessor(personagemController, hadoukenController, exitButton);
 		Gdx.input.setInputProcessor(personagemInputProcessor);
@@ -40,7 +42,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		Gdx.graphics.setTitle("FightGame - FPS: " + Gdx.graphics.getFramesPerSecond());
 
 		batch.begin();
-		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw( gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		exitButton.draw(batch);
 		personagemController.render(batch);
@@ -53,10 +55,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		background.dispose();
-		exitButton.dispose();
-		personagemController.dispose();
-		hadoukenController.dispose();
-		balaoController.dispose();
+		gameAssetManager.dispose();
 	}
 }

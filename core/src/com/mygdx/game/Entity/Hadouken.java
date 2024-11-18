@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Enum.HadoukenPositions;
+import com.mygdx.game.GameAssetManager.GameAssetManager;
 
 public class Hadouken {
-    Texture img;
+    private final GameAssetManager gameAssetManager;
 
     int widthImg;
     int heightImg;
@@ -34,17 +35,6 @@ public class Hadouken {
         this.speed = speed;
     }
 
-    public Texture getImg() {
-        return img;
-    }
-
-    public Hadouken(Texture img) {
-        this.img = img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
-    }
 
     public int getWidthImg() {
         return widthImg;
@@ -78,9 +68,9 @@ public class Hadouken {
         this.imgY = imgY;
     }
 
-    public Hadouken(HadoukenPositions position, int widthImg, int heightImg, float imgX, float imgY, float speed) {
+    public Hadouken(GameAssetManager gameAssetManager, HadoukenPositions position, int widthImg, int heightImg, float imgX, float imgY, float speed) {
+        this.gameAssetManager = gameAssetManager;
         this.position = position;
-        this.img = getImgPosition();
         this.widthImg = widthImg;
         this.heightImg = heightImg;
         this.imgX = imgX;
@@ -88,27 +78,18 @@ public class Hadouken {
         this.speed = speed;
     }
 
-    public Texture getImgPosition() {
+    public Texture getImg() {
         switch (position) {
             case RIGHT:
-                return new Texture("hadouken/hadouken-right.png");
+                return gameAssetManager.getManager().get("hadouken/hadouken-right.png", Texture.class);
             case LEFT:
-                return new Texture("hadouken/hadouken-left.png");
+                return gameAssetManager.getManager().get("hadouken/hadouken-left.png", Texture.class);
             default:
-                return new Texture("hadouken/hadouken-right.png");
+                return gameAssetManager.getManager().get("hadouken/hadouken-right.png", Texture.class);
         }
-    }
-
-    public void updateImg(Texture newImg) {
-        img.dispose();
-        img = newImg;
     }
 
     public boolean isOffScreen() {
         return imgX > Gdx.graphics.getWidth() + 50 || imgX < -50;
-    }
-
-    public void dispose() {
-        img.dispose();
     }
 }
