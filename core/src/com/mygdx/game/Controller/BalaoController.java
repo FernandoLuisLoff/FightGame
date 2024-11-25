@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BalaoController {
-    private GameAssetManager gameAssetManager;
 
     private ArrayList<Balao> baloes;
 
@@ -27,7 +26,6 @@ public class BalaoController {
     HadoukenController hadoukenController;
 
     public void init(HadoukenController hadoukenController, GameAssetManager gameAssetManager) {
-        this.gameAssetManager = gameAssetManager;
         this.hadoukenController = hadoukenController;
 
         if (baloes == null) {

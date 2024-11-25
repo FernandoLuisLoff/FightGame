@@ -20,10 +20,6 @@ public class HadoukenController {
         return hadoukens;
     }
 
-    public void setHadoukens(ArrayList<Hadouken> hadoukens) {
-        this.hadoukens = hadoukens;
-    }
-
     public void init(GameAssetManager gameAssetManager) {
         this.gameAssetManager = gameAssetManager;
 

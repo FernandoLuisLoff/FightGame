@@ -29,8 +29,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		exitButton = new ExitButton( gameAssetManager, 100, 100 );
 
-		personagemController.init(gameAssetManager);
 		hadoukenController.init(gameAssetManager);
+		personagemController.init(gameAssetManager, hadoukenController);
 		balaoController.init(hadoukenController, gameAssetManager);
 
 		InputProcessor personagemInputProcessor = new InputProcessor(personagemController, hadoukenController, exitButton);
@@ -39,7 +39,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.graphics.setTitle("FightGame - FPS: " + Gdx.graphics.getFramesPerSecond());
+		Gdx.graphics.setTitle("FightGame");
 
 		batch.begin();
 		batch.draw( gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

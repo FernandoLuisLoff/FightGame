@@ -3,6 +3,8 @@ package com.mygdx.game.Controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Entity.Balao;
+import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
@@ -13,18 +15,17 @@ import java.util.ArrayList;
 public class PersonagemController {
     private GameAssetManager gameAssetManager;
 
+    private HadoukenController hadoukenController;
+
     private ArrayList<Personagem> personagens;
 
     public ArrayList<Personagem> getPersonagens() {
         return personagens;
     }
 
-    public void setPersonagens(ArrayList<Personagem> personagens) {
-        this.personagens = personagens;
-    }
-
-    public void init(GameAssetManager gameAssetManager) {
+    public void init(GameAssetManager gameAssetManager, HadoukenController hadoukenController) {
         this.gameAssetManager = gameAssetManager;
+        this.hadoukenController = hadoukenController;
 
         if (personagens == null) {
             personagens = new ArrayList<Personagem>(2);
@@ -38,6 +39,20 @@ public class PersonagemController {
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
         personagens.add( new Personagem( this.gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+    }
+
+    public boolean testHit(Balao balao) {
+        Boolean test = false;
+        for (Hadouken hadouken : hadoukenController.getHadoukens()) {
+            Float x = hadouken.getImgX() + hadouken.getWidthImg();
+            Float y = hadouken.getImgY() + hadouken.getHeightImg()/2;
+
+            if ( balao.hit(x, y) ) {
+                test = true;
+                break;
+            }
+        }
+        return test;
     }
 
     public void update(Personagem personagem) {

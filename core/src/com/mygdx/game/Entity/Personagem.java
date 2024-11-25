@@ -323,6 +323,16 @@ public class Personagem {
                 PersonagensPositions.PUNCH_LEFT
         ).contains(position);
     }
+    public boolean hit(float x, float y) {
+        Float heightImg;
+        if (isDowning()) {
+            heightImg = getDownHeightImg();
+        } else {
+            heightImg = getUpperHeightImg();
+        }
+
+        return ( ( x > imgX && x < imgX + widthImg ) && (y > imgY && y < imgY + heightImg ) );
+    }
 
     public boolean isOffScreen() {
         return imgX > Gdx.graphics.getWidth() || imgX < 0;
