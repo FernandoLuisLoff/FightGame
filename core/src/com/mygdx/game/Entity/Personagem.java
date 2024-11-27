@@ -11,6 +11,9 @@ import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import java.util.EnumSet;
 
 public class Personagem {
+    private String name;
+    private int life;
+
     private final GameAssetManager gameAssetManager;
 
     private String pathSprites;
@@ -32,6 +35,22 @@ public class Personagem {
     private float jumpVelocity = 0;
     private float gravity = -1f;
     private float groundY;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
 
     public String getPathSprites() {
         return pathSprites;
@@ -133,7 +152,8 @@ public class Personagem {
         this.groundY = groundY;
     }
 
-    public Personagem(GameAssetManager gameAssetManager, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(String name, GameAssetManager gameAssetManager, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+        this.name = name;
         this.gameAssetManager = gameAssetManager;
         this.pathSprites = pathSprites;
         this.position = position;
@@ -144,6 +164,8 @@ public class Personagem {
         this.imgX = imgX;
         this.imgY = imgY;
         this.groundY = imgY;
+
+        this.life = 100;
     }
 
     public Texture getImg() {
@@ -323,15 +345,13 @@ public class Personagem {
                 PersonagensPositions.PUNCH_LEFT
         ).contains(position);
     }
-    public boolean hit(float x, float y) {
-        Float heightImg;
-        if (isDowning()) {
-            heightImg = getDownHeightImg();
-        } else {
-            heightImg = getUpperHeightImg();
-        }
 
-        return ( ( x > imgX && x < imgX + widthImg ) && (y > imgY && y < imgY + heightImg ) );
+    public boolean hit(float x, float y) {
+        if (!isDowning()) {
+            return ((x > (imgX - widthImg/2) && x < (imgX + widthImg/2)) && (y > (imgY - upperHeightImg/2) && y < imgY + upperHeightImg));
+        } else {
+            return false;
+        }
     }
 
     public boolean isOffScreen() {

@@ -3,8 +3,6 @@ package com.mygdx.game.Controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Entity.Balao;
-import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
@@ -13,8 +11,6 @@ import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import java.util.ArrayList;
 
 public class PersonagemController {
-    private GameAssetManager gameAssetManager;
-
     private HadoukenController hadoukenController;
 
     private ArrayList<Personagem> personagens;
@@ -24,7 +20,6 @@ public class PersonagemController {
     }
 
     public void init(GameAssetManager gameAssetManager, HadoukenController hadoukenController) {
-        this.gameAssetManager = gameAssetManager;
         this.hadoukenController = hadoukenController;
 
         if (personagens == null) {
@@ -35,24 +30,27 @@ public class PersonagemController {
         float heightImg = 420;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( this.gameAssetManager, "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( "Player 1", gameAssetManager, "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( this.gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( "Player 2", gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
     }
 
-    public boolean testHit(Balao balao) {
-        Boolean test = false;
-        for (Hadouken hadouken : hadoukenController.getHadoukens()) {
-            Float x = hadouken.getImgX() + hadouken.getWidthImg();
-            Float y = hadouken.getImgY() + hadouken.getHeightImg()/2;
+    public void testHit(Personagem personagem) {
+        for (Personagem outroPersonagem : personagens) {
+            if (outroPersonagem != personagem) {
+                float x = 0;
+                if (personagem.isRight()) {
+                    x = personagem.getImgX() + 50;
+                } else if (personagem.isLeft()) {
+                    x = personagem.getImgX() - 50;
+                }
 
-            if ( balao.hit(x, y) ) {
-                test = true;
-                break;
+                if (outroPersonagem.hit(x, personagem.getImgY() + personagem.getUpperHeightImg()/2)) {
+                    outroPersonagem.setLife(outroPersonagem.getLife() - 10);
+                }
             }
         }
-        return test;
     }
 
     public void update(Personagem personagem) {
@@ -90,7 +88,7 @@ public class PersonagemController {
         for (Personagem personagem : personagens) {
             update(personagem);
 
-            Float heightImg;
+            float heightImg;
             if (personagem.isDowning()) {
                 heightImg = personagem.getDownHeightImg();
             } else {

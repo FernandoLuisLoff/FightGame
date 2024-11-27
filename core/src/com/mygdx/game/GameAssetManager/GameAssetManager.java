@@ -18,7 +18,6 @@ public class GameAssetManager {
         manager.load("background/exit.png", Texture.class);
         manager.load("hadouken/hadouken-left.png", Texture.class);
         manager.load("hadouken/hadouken-right.png", Texture.class);
-        manager.load("balao/balao.png", Texture.class);
         manager.load("players/player1/down_left.png", Texture.class);
         manager.load("players/player1/down_right.png", Texture.class);
         manager.load("players/player1/jump_left.png", Texture.class);
@@ -43,6 +42,11 @@ public class GameAssetManager {
         manager.load("players/player2/punch_right.png", Texture.class);
         manager.load("players/player2/stop_left.png", Texture.class);
         manager.load("players/player2/stop_right.png", Texture.class);
+        manager.load("lifebar/life-bar_10.png", Texture.class);
+        manager.load("lifebar/life-bar_25.png", Texture.class);
+        manager.load("lifebar/life-bar_50.png", Texture.class);
+        manager.load("lifebar/life-bar_75.png", Texture.class);
+        manager.load("lifebar/life-bar_100.png", Texture.class);
 
         manager.finishLoading();
     }
