@@ -13,6 +13,7 @@ import java.util.EnumSet;
 public class Personagem {
     private String name;
     private int life;
+    private int energy;
 
     private final GameAssetManager gameAssetManager;
 
@@ -136,6 +137,14 @@ public class Personagem {
         this.jumpVelocity = jumpVelocity;
     }
 
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public float getGravity() {
         return gravity;
     }
@@ -165,7 +174,8 @@ public class Personagem {
         this.imgY = imgY;
         this.groundY = imgY;
 
-        this.life = 100;
+        life = 100;
+        energy = 100;
     }
 
     public Texture getImg() {
@@ -271,12 +281,13 @@ public class Personagem {
     }
 
     public void hadouken(HadoukenController hadoukenController) {
-        if (!isDowning()) {
+        if (energy >= 100 && !isDowning()) {
             if (isRight()) {
-                hadoukenController.newHadouken(HadoukenPositions.RIGHT, imgX + 25, imgY + upperHeightImg / 3);
+                hadoukenController.newHadouken(HadoukenPositions.RIGHT, imgX + 150, imgY + upperHeightImg / 3);
             } else if (isLeft()) {
-                hadoukenController.newHadouken(HadoukenPositions.LEFT, imgX - 25, imgY + upperHeightImg / 3);
+                hadoukenController.newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 3);
             }
+            energy = 0;
         }
     }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Controller.HadoukenController;
-import com.mygdx.game.Controller.LifeBarController;
+import com.mygdx.game.Controller.StatusBarController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
@@ -19,7 +19,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	private ExitButton exitButton;
 	private final PersonagemController  personagemController = new PersonagemController();
 	private final HadoukenController hadoukenController = new HadoukenController();
-	private final LifeBarController lifeBarController = new LifeBarController();
+	private final StatusBarController lifeBarController = new StatusBarController();
 
 	@Override
 	public void create () {

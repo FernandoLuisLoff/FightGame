@@ -14,10 +14,17 @@ public class GameAssetManager {
     public void init () {
         manager = new AssetManager();
 
+        // BackGround
         manager.load("background/background.jpg", Texture.class);
+
+        // Exit
         manager.load("background/exit.png", Texture.class);
+
+        // Hadouken
         manager.load("hadouken/hadouken-left.png", Texture.class);
         manager.load("hadouken/hadouken-right.png", Texture.class);
+
+        // Player 1
         manager.load("players/player1/down_left.png", Texture.class);
         manager.load("players/player1/down_right.png", Texture.class);
         manager.load("players/player1/jump_left.png", Texture.class);
@@ -30,6 +37,8 @@ public class GameAssetManager {
         manager.load("players/player1/punch_right.png", Texture.class);
         manager.load("players/player1/stop_left.png", Texture.class);
         manager.load("players/player1/stop_right.png", Texture.class);
+
+        // PLayer 2
         manager.load("players/player2/down_left.png", Texture.class);
         manager.load("players/player2/down_right.png", Texture.class);
         manager.load("players/player2/jump_left.png", Texture.class);
@@ -42,11 +51,21 @@ public class GameAssetManager {
         manager.load("players/player2/punch_right.png", Texture.class);
         manager.load("players/player2/stop_left.png", Texture.class);
         manager.load("players/player2/stop_right.png", Texture.class);
+
+        // LifeBar
         manager.load("lifebar/life-bar_10.png", Texture.class);
         manager.load("lifebar/life-bar_25.png", Texture.class);
         manager.load("lifebar/life-bar_50.png", Texture.class);
         manager.load("lifebar/life-bar_75.png", Texture.class);
         manager.load("lifebar/life-bar_100.png", Texture.class);
+
+        // EnergyBar
+        manager.load("energybar/energyBar_0.png", Texture.class);
+        manager.load("energybar/energyBar_20.png", Texture.class);
+        manager.load("energybar/energyBar_40.png", Texture.class);
+        manager.load("energybar/energyBar_60.png", Texture.class);
+        manager.load("energybar/energyBar_80.png", Texture.class);
+        manager.load("energybar/energyBar_100.png", Texture.class);
 
         manager.finishLoading();
     }

@@ -3,12 +3,14 @@ package com.mygdx.game.Controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PersonagemController {
     private HadoukenController hadoukenController;
@@ -36,7 +38,7 @@ public class PersonagemController {
         personagens.add( new Personagem( "Player 2", gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
     }
 
-    public void testHit(Personagem personagem) {
+    public void testPunchHit(Personagem personagem) {
         for (Personagem outroPersonagem : personagens) {
             if (outroPersonagem != personagem) {
                 float x = 0;
@@ -49,6 +51,18 @@ public class PersonagemController {
                 if (outroPersonagem.hit(x, personagem.getImgY() + personagem.getUpperHeightImg()/2)) {
                     outroPersonagem.setLife(outroPersonagem.getLife() - 10);
                 }
+            }
+        }
+    }
+
+    public void testHadoukenHit(Personagem personagem) {
+        Iterator<Hadouken> iterator = hadoukenController.getHadoukens().iterator();
+        while (iterator.hasNext()) {
+            Hadouken hadouken = iterator.next();
+
+            if (personagem.hit(hadouken.getImgX(), hadouken.getImgY())) {
+                personagem.setLife(personagem.getLife() - 25);
+                iterator.remove();
             }
         }
     }
@@ -81,6 +95,12 @@ public class PersonagemController {
                 }
                 personagem.setJumpVelocity(0);
             }
+        }
+
+        testHadoukenHit(personagem);
+
+        if (personagem.getLife() <= 0) {
+
         }
     }
 
