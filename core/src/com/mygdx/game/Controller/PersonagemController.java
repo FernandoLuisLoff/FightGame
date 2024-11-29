@@ -2,6 +2,8 @@ package com.mygdx.game.Controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
@@ -15,10 +17,20 @@ import java.util.Iterator;
 public class PersonagemController {
     private HadoukenController hadoukenController;
 
+    GlyphLayout layout;
+
+    private BitmapFont font;
+
     private ArrayList<Personagem> personagens;
+
+    private Boolean paused = false;
 
     public ArrayList<Personagem> getPersonagens() {
         return personagens;
+    }
+
+    public Boolean getPaused() {
+        return paused;
     }
 
     public void init(GameAssetManager gameAssetManager, HadoukenController hadoukenController) {
@@ -27,6 +39,11 @@ public class PersonagemController {
         if (personagens == null) {
             personagens = new ArrayList<Personagem>(2);
         }
+
+        layout = new GlyphLayout();
+
+        font = new BitmapFont();
+        font.getData().setScale(7f);
 
         float widhtImg = 240;
         float heightImg = 420;
@@ -61,46 +78,44 @@ public class PersonagemController {
             Hadouken hadouken = iterator.next();
 
             if (personagem.hit(hadouken.getImgX(), hadouken.getImgY())) {
-                personagem.setLife(personagem.getLife() - 25);
+                personagem.setLife(personagem.getLife() - 50);
                 iterator.remove();
             }
         }
     }
 
     public void update(Personagem personagem) {
-        if (!personagem.isOffScreen()) {
-            personagem.setImgX(personagem.getImgX() + personagem.getSpeed());
-        } else {
-            if (personagem.getImgX() <= 0) {
-                personagem.setImgX(personagem.getImgX() + 1);
-            } else if (personagem.getImgX() >= Gdx.graphics.getWidth()) {
-                personagem.setImgX(personagem.getImgX() - 1);
-            }
-        }
-
-        if (personagem.isJumping()) {
-            personagem.setImgY(personagem.getImgY() + personagem.getJumpVelocity());
-            personagem.setJumpVelocity(personagem.getJumpVelocity() + personagem.getGravity()); // Acelerar para baixo (gravidade)
-
-            if (personagem.getImgY() <= personagem.getGroundY()) { // Se atingir o chão
-                personagem.setImgY(personagem.getGroundY());
-                if (personagem.getPosition() == PersonagensPositions.JUMP_RIGHT) {
-                    personagem.setPosition(PersonagensPositions.STOP_RIGHT);
-                } else if (personagem.getPosition() == PersonagensPositions.JUMP_LEFT) {
-                    personagem.setPosition(PersonagensPositions.STOP_LEFT);
-                } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_RIGHT) {
-                    personagem.setPosition(PersonagensPositions.MOVE_RIGHT);
-                } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_LEFT) {
-                    personagem.setPosition(PersonagensPositions.MOVE_LEFT);
+        if (!paused) {
+                if (!personagem.isOffScreen()) {
+                personagem.setImgX(personagem.getImgX() + personagem.getSpeed());
+            } else {
+                if (personagem.getImgX() <= 0) {
+                    personagem.setImgX(personagem.getImgX() + 1);
+                } else if (personagem.getImgX() >= Gdx.graphics.getWidth()) {
+                    personagem.setImgX(personagem.getImgX() - 1);
                 }
-                personagem.setJumpVelocity(0);
             }
-        }
 
-        testHadoukenHit(personagem);
+            if (personagem.isJumping()) {
+                personagem.setImgY(personagem.getImgY() + personagem.getJumpVelocity());
+                personagem.setJumpVelocity(personagem.getJumpVelocity() + personagem.getGravity()); // Acelerar para baixo (gravidade)
 
-        if (personagem.getLife() <= 0) {
+                if (personagem.getImgY() <= personagem.getGroundY()) { // Se atingir o chão
+                    personagem.setImgY(personagem.getGroundY());
+                    if (personagem.getPosition() == PersonagensPositions.JUMP_RIGHT) {
+                        personagem.setPosition(PersonagensPositions.STOP_RIGHT);
+                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_LEFT) {
+                        personagem.setPosition(PersonagensPositions.STOP_LEFT);
+                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_RIGHT) {
+                        personagem.setPosition(PersonagensPositions.MOVE_RIGHT);
+                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_LEFT) {
+                        personagem.setPosition(PersonagensPositions.MOVE_LEFT);
+                    }
+                    personagem.setJumpVelocity(0);
+                }
+            }
 
+            testHadoukenHit(personagem);
         }
     }
 
@@ -116,6 +131,28 @@ public class PersonagemController {
             }
 
             batch.draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
+
+
+            endGame(batch, personagem);
         }
+    }
+
+    public void endGame(SpriteBatch batch, Personagem personagem) {
+        if (personagem.getLife() <= 0) {
+            layout.setText(font, personagem.getName() + " levou uma surra!");
+
+            float centerX = (Gdx.graphics.getWidth() - layout.width) / 2;
+            float centerY = (Gdx.graphics.getHeight() + layout.height) / 2;
+
+            font.draw(batch, layout, centerX, centerY);
+            if (!paused) {
+                paused = true;
+                hadoukenController.setPaused(true);
+            }
+        }
+    }
+
+    public void dispose() {
+        font.dispose();
     }
 }

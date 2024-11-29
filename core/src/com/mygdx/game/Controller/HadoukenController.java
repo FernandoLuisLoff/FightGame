@@ -16,8 +16,18 @@ public class HadoukenController {
 
     private ArrayList<Hadouken> hadoukens;
 
+    private Boolean paused = false;
+
     public ArrayList<Hadouken> getHadoukens() {
         return hadoukens;
+    }
+
+    public Boolean getPaused() {
+        return paused;
+    }
+
+    public void setPaused(Boolean paused) {
+        this.paused = paused;
     }
 
     public void init(GameAssetManager gameAssetManager) {
@@ -29,14 +39,16 @@ public class HadoukenController {
     }
 
     public void newHadouken(HadoukenPositions hadoukenPositions, Float imgX, Float imgY) {
-        hadoukens.add( new Hadouken( gameAssetManager, hadoukenPositions, 80, 80, imgX, imgY, 10));
+        hadoukens.add( new Hadouken( gameAssetManager, hadoukenPositions, 160, 160, imgX, imgY, 10));
     }
 
     public void update(Hadouken hadouken) {
-        if (hadouken.getPosition() == HadoukenPositions.RIGHT) {
-            hadouken.setImgX(hadouken.getImgX() + hadouken.getSpeed());
-        } else if (hadouken.getPosition() == HadoukenPositions.LEFT) {
-            hadouken.setImgX(hadouken.getImgX() - hadouken.getSpeed());
+        if (!paused) {
+            if (hadouken.getPosition() == HadoukenPositions.RIGHT) {
+                hadouken.setImgX(hadouken.getImgX() + hadouken.getSpeed());
+            } else if (hadouken.getPosition() == HadoukenPositions.LEFT) {
+                hadouken.setImgX(hadouken.getImgX() - hadouken.getSpeed());
+            }
         }
     }
 

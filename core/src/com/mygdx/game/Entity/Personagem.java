@@ -175,7 +175,7 @@ public class Personagem {
         this.groundY = imgY;
 
         life = 100;
-        energy = 100;
+        energy = 0;
     }
 
     public Texture getImg() {
@@ -216,7 +216,7 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_MOVE_RIGHT;
             }
-            speed = 5;
+            speed = 10;
         }
     }
 
@@ -238,7 +238,7 @@ public class Personagem {
             } else {
                 position = PersonagensPositions.JUMP_MOVE_LEFT;
             }
-            speed = -5;
+            speed = -10;
         }
     }
 
@@ -265,7 +265,7 @@ public class Personagem {
                 position = PersonagensPositions.JUMP_MOVE_LEFT;
             }
 
-            jumpVelocity = 25;
+            jumpVelocity = 30;
         }
     }
 

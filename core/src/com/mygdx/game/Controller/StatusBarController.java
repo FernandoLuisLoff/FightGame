@@ -15,6 +15,8 @@ public class StatusBarController {
 
     private BitmapFont font;
 
+    private final Double deltaTimer = 0.01;
+
     public ArrayList<StatusBar> getstatusBars() {
         return statusBars;
     }
@@ -33,8 +35,24 @@ public class StatusBarController {
         statusBars.add( new StatusBar(gameAssetManager, this.personagemController.getPersonagens().get(1), 60, 500, 50, 270, Gdx.graphics.getWidth() - 600, Gdx.graphics.getHeight() - 150 ));
     }
 
+    public void update(StatusBar statusBar) {
+        if (!personagemController.getPaused()) {
+            Double time = 1.0;
+            if (statusBar.getTimer() >= time) {
+                int actualEnergy = statusBar.getPersonagem().getEnergy();
+                if (actualEnergy < 100) {
+                    statusBar.getPersonagem().setEnergy(actualEnergy + 20);
+                }
+                statusBar.setTimer(statusBar.getTimer() - time);
+            }
+
+            statusBar.setTimer(statusBar.getTimer() + deltaTimer);
+        }
+    }
+
     public void render(SpriteBatch batch) {
         for (StatusBar statusBar : statusBars) {
+            update(statusBar);
             font.draw(batch, statusBar.getPersonagem().getName(), statusBar.getImgX() + 120, statusBar.getImgY() + 80);
             batch.draw( statusBar.getLifeBar(), statusBar.getImgX(), statusBar.getImgY(), statusBar.getWidthLifeBar(), statusBar.getHeightLifeBar() );
             batch.draw( statusBar.getEnergyBar(), statusBar.getImgX()+50, statusBar.getImgY()-40, statusBar.getWidthEnergyBar(), statusBar.getHeightEnergyBar() );

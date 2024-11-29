@@ -19,20 +19,22 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        for (Personagem personagem : personagemController.getPersonagens()) {
-            if (i == personagem.getInputKeys().keyJump) {
-                personagem.jump();
-            } else if (i == personagem.getInputKeys().keyRight) {
-                personagem.moveRight();
-            } else if (i == personagem.getInputKeys().keyLeft) {
-                personagem.moveLeft();
-            } else if (i == personagem.getInputKeys().keyHadouken) {
-                personagem.hadouken(hadoukenController);
-            } else if (i == personagem.getInputKeys().keyDown) {
-                personagem.down();
-            } else if (i == personagem.getInputKeys().keyPunch) {
-                personagem.punch();
-                personagemController.testPunchHit(personagem);
+        if (!personagemController.getPaused()) {
+            for (Personagem personagem : personagemController.getPersonagens()) {
+                if (i == personagem.getInputKeys().keyJump) {
+                    personagem.jump();
+                } else if (i == personagem.getInputKeys().keyRight) {
+                    personagem.moveRight();
+                } else if (i == personagem.getInputKeys().keyLeft) {
+                    personagem.moveLeft();
+                } else if (i == personagem.getInputKeys().keyHadouken) {
+                    personagem.hadouken(hadoukenController);
+                } else if (i == personagem.getInputKeys().keyDown) {
+                    personagem.down();
+                } else if (i == personagem.getInputKeys().keyPunch) {
+                    personagem.punch();
+                    personagemController.testPunchHit(personagem);
+                }
             }
         }
         return true;
@@ -40,13 +42,15 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        for (Personagem personagem : personagemController.getPersonagens()) {
-            if (i == personagem.getInputKeys().keyRight) {
-                personagem.stopMoveRight();
-            } else if (i == personagem.getInputKeys().keyLeft) {
-                personagem.stopMoveLeft();
-            } else if (i == personagem.getInputKeys().keyDown || i == personagem.getInputKeys().keyPunch) {
-                personagem.stopHadoukenOrPunch();
+        if (!personagemController.getPaused()) {
+            for (Personagem personagem : personagemController.getPersonagens()) {
+                if (i == personagem.getInputKeys().keyRight) {
+                    personagem.stopMoveRight();
+                } else if (i == personagem.getInputKeys().keyLeft) {
+                    personagem.stopMoveLeft();
+                } else if (i == personagem.getInputKeys().keyDown || i == personagem.getInputKeys().keyPunch) {
+                    personagem.stopHadoukenOrPunch();
+                }
             }
         }
         return false;

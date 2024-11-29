@@ -6,6 +6,7 @@ import com.mygdx.game.GameAssetManager.GameAssetManager;
 public class StatusBar {
     private final GameAssetManager gameAssetManager;
     private Personagem personagem;
+    private Double timer;
     private int widthLifeBar;
     private int heightLifeBar;
     private int widthEnergyBar;
@@ -20,6 +21,15 @@ public class StatusBar {
     public void setPersonagem(Personagem personagem) {
         this.personagem = personagem;
     }
+
+    public Double getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Double timer) {
+        this.timer = timer;
+    }
+
     public int getWidthLifeBar() {
         return widthLifeBar;
     }
@@ -81,16 +91,18 @@ public class StatusBar {
         this.heightEnergyBar = heightEnergyBar;
         this.imgX = imgX;
         this.imgY = imgY;
+
+        timer = 0.0;
     }
 
     public Texture getLifeBar() {
-        if (personagem.getLife() > 75) {
+        if (personagem.getLife() >= 100) {
             return gameAssetManager.getManager().get("lifebar/life-bar_100.png", Texture.class);
-        } else if (personagem.getLife() <= 75 && personagem.getLife() > 50) {
+        } else if (personagem.getLife() < 100 && personagem.getLife() >= 75) {
                 return gameAssetManager.getManager().get("lifebar/life-bar_75.png", Texture.class);
-        } else if (personagem.getLife() <= 50 && personagem.getLife() > 25) {
+        } else if (personagem.getLife() < 75 && personagem.getLife() >= 50) {
             return gameAssetManager.getManager().get("lifebar/life-bar_50.png", Texture.class);
-        } else if (personagem.getLife() <= 25 && personagem.getLife() > 10) {
+        } else if (personagem.getLife() < 50 && personagem.getLife() >= 25) {
             return gameAssetManager.getManager().get("lifebar/life-bar_25.png", Texture.class);
         } else {
             return gameAssetManager.getManager().get("lifebar/life-bar_10.png", Texture.class);

@@ -56,6 +56,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		gameAssetManager.dispose();
+		personagemController.dispose();
 		lifeBarController.dispose();
 	}
 }
