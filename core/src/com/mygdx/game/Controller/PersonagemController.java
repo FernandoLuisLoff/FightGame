@@ -43,7 +43,7 @@ public class PersonagemController {
         layout = new GlyphLayout();
 
         font = new BitmapFont();
-        font.getData().setScale(7f);
+        font.getData().setScale(5f);
 
         float widhtImg = 240;
         float heightImg = 420;
@@ -120,6 +120,7 @@ public class PersonagemController {
     }
 
     public void render(SpriteBatch batch) {
+        Personagem personagemDeath = null;
         for (Personagem personagem : personagens) {
             update(personagem);
 
@@ -133,22 +134,26 @@ public class PersonagemController {
             batch.draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
 
 
-            endGame(batch, personagem);
+            if (personagem.getLife() <= 0 && personagemDeath == null) {
+                personagemDeath = personagem;
+            }
+        }
+
+        if (personagemDeath != null) {
+            endGame(batch, personagemDeath);
         }
     }
 
     public void endGame(SpriteBatch batch, Personagem personagem) {
-        if (personagem.getLife() <= 0) {
-            layout.setText(font, personagem.getName() + " levou uma surra!");
+        layout.setText(font, personagem.getName() + " levou uma surra!");
 
-            float centerX = (Gdx.graphics.getWidth() - layout.width) / 2;
-            float centerY = (Gdx.graphics.getHeight() + layout.height) / 2;
+        float centerX = (Gdx.graphics.getWidth() - layout.width) / 2;
+        float centerY = (Gdx.graphics.getHeight() + layout.height) / 2;
 
-            font.draw(batch, layout, centerX, centerY);
-            if (!paused) {
-                paused = true;
-                hadoukenController.setPaused(true);
-            }
+        font.draw(batch, layout, centerX, centerY);
+        if (!paused) {
+            paused = true;
+            hadoukenController.setPaused(true);
         }
     }
 
