@@ -9,6 +9,7 @@ import com.mygdx.game.Controller.SoundController;
 import com.mygdx.game.Controller.StatusBarController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
+import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.InputProcessor;
 
@@ -20,24 +21,61 @@ public class MyGdxGame extends Game {
 	private ExitButton exitButton;
 
 	private final SoundController soundController = new SoundController();
-	private final PersonagemController  personagemController = new PersonagemController();
+	private final PersonagemController personagemController = new PersonagemController();
 	private final HadoukenController hadoukenController = new HadoukenController();
 	private final StatusBarController lifeBarController = new StatusBarController();
+
+	private GameState gameState = GameState.PAUSED;
+
+	public GameAssetManager getGameAssetManager() {
+		return gameAssetManager;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public ExitButton getExitButton() {
+		return exitButton;
+	}
+
+	public SoundController getSoundController() {
+		return soundController;
+	}
+
+	public PersonagemController getPersonagemController() {
+		return personagemController;
+	}
+
+	public HadoukenController getHadoukenController() {
+		return hadoukenController;
+	}
+
+	public StatusBarController getLifeBarController() {
+		return lifeBarController;
+	}
+
+	public GameState getGameState() {
+		return gameState;
+	}
+
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
 
 	@Override
 	public void create () {
 		gameAssetManager.init();
 
 		batch = new SpriteBatch();
+		exitButton = new ExitButton(this);
 
-		exitButton = new ExitButton( gameAssetManager, 100, 100 );
+		hadoukenController.init(this);
+		personagemController.init(this);
+		lifeBarController.init(this);
+		soundController.init(this);
 
-		soundController.init(gameAssetManager);
-		hadoukenController.init(gameAssetManager);
-		personagemController.init(gameAssetManager, hadoukenController);
-		lifeBarController.init(gameAssetManager, personagemController);
-
-		InputProcessor personagemInputProcessor = new InputProcessor(personagemController, hadoukenController, exitButton);
+		InputProcessor personagemInputProcessor = new InputProcessor(this);
 		Gdx.input.setInputProcessor(personagemInputProcessor);
 	}
 
@@ -48,11 +86,11 @@ public class MyGdxGame extends Game {
 		batch.begin();
 		batch.draw( gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		exitButton.draw(batch);
-		personagemController.render(batch);
-		hadoukenController.render(batch);
-		lifeBarController.render(batch);
-		soundController.render(batch);
+		exitButton.draw();
+		personagemController.render();
+		hadoukenController.render();
+		lifeBarController.render();
+		soundController.render();
 
 		batch.end();
 	}
@@ -61,7 +99,6 @@ public class MyGdxGame extends Game {
 	public void dispose () {
 		batch.dispose();
 		gameAssetManager.dispose();
-		personagemController.dispose();
 		lifeBarController.dispose();
 		soundController.dispose();
 	}

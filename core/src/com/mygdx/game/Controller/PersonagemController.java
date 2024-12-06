@@ -7,52 +7,39 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
+import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
+import com.mygdx.game.MyGdxGame;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PersonagemController {
-    private HadoukenController hadoukenController;
-
-    GlyphLayout layout;
-
-    private BitmapFont font;
+    private MyGdxGame game;
 
     private ArrayList<Personagem> personagens;
-
-    private Boolean paused = false;
 
     public ArrayList<Personagem> getPersonagens() {
         return personagens;
     }
 
-    public Boolean getPaused() {
-        return paused;
-    }
-
-    public void init(GameAssetManager gameAssetManager, HadoukenController hadoukenController) {
-        this.hadoukenController = hadoukenController;
+    public void init(MyGdxGame game) {
+        this.game = game;
 
         if (personagens == null) {
             personagens = new ArrayList<Personagem>(2);
         }
 
-        layout = new GlyphLayout();
-
-        font = new BitmapFont();
-        font.getData().setScale(5f);
-
         float widhtImg = 240;
         float heightImg = 420;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( "Player 1", gameAssetManager, "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( "Player 1", game.getGameAssetManager(), "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( "Player 2", gameAssetManager, "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( "Player 2", game.getGameAssetManager(), "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
     }
 
     public void testPunchHit(Personagem personagem) {
@@ -73,7 +60,7 @@ public class PersonagemController {
     }
 
     public void testHadoukenHit(Personagem personagem) {
-        Iterator<Hadouken> iterator = hadoukenController.getHadoukens().iterator();
+        Iterator<Hadouken> iterator = game.getHadoukenController().getHadoukens().iterator();
         while (iterator.hasNext()) {
             Hadouken hadouken = iterator.next();
 
@@ -85,7 +72,7 @@ public class PersonagemController {
     }
 
     public void update(Personagem personagem) {
-        if (!paused) {
+        if (game.getGameState() == GameState.RUNNING) {
             // Tratamento de saida de tela
             if (!personagem.isOffScreen()) {
                 personagem.setImgX(personagem.getImgX() + personagem.getSpeed());
@@ -121,7 +108,7 @@ public class PersonagemController {
         }
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         Personagem personagemDeath = null;
         for (Personagem personagem : personagens) {
             update(personagem);
@@ -133,7 +120,7 @@ public class PersonagemController {
                 heightImg = personagem.getUpperHeightImg();
             }
 
-            batch.draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
+            game.getBatch().draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
 
 
             if (personagem.getLife() <= 0 && personagemDeath == null) {
@@ -142,24 +129,14 @@ public class PersonagemController {
         }
 
         if (personagemDeath != null) {
-            endGame(batch, personagemDeath);
+            endGame(personagemDeath);
         }
     }
 
-    public void endGame(SpriteBatch batch, Personagem personagem) {
-        layout.setText(font, personagem.getName() + " levou uma surra!");
-
-        float centerX = (Gdx.graphics.getWidth() - layout.width) / 2;
-        float centerY = (Gdx.graphics.getHeight() + layout.height) / 2;
-
-        font.draw(batch, layout, centerX, centerY);
-        if (!paused) {
-            paused = true;
-            hadoukenController.setPaused(true);
+    public void endGame(Personagem personagem) {
+        if (game.getGameState() == GameState.RUNNING) {
+            game.getSoundController().endGameSound(personagem.getName());
+            game.setGameState( GameState.END_GAME );
         }
-    }
-
-    public void dispose() {
-        font.dispose();
     }
 }

@@ -5,22 +5,20 @@ import com.mygdx.game.Controller.HadoukenController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
 import com.mygdx.game.Entity.Personagem;
+import com.mygdx.game.Enum.GameState;
+import com.mygdx.game.MyGdxGame;
 
 public class InputProcessor implements com.badlogic.gdx.InputProcessor {
-    PersonagemController personagemController;
-    HadoukenController hadoukenController;
-    ExitButton exitButton;
+    private MyGdxGame game;
 
-    public InputProcessor(PersonagemController personagemController, HadoukenController hadoukenController, ExitButton exitButton) {
-        this.personagemController = personagemController;
-        this.hadoukenController = hadoukenController;
-        this.exitButton = exitButton;
+    public InputProcessor(MyGdxGame game) {
+        this.game = game;
     }
 
     @Override
     public boolean keyDown(int i) {
-        if (!personagemController.getPaused()) {
-            for (Personagem personagem : personagemController.getPersonagens()) {
+        if (game.getGameState() == GameState.RUNNING) {
+            for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
                 if (i == personagem.getInputKeys().keyJump) {
                     personagem.jump();
                 } else if (i == personagem.getInputKeys().keyRight) {
@@ -28,12 +26,12 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
                 } else if (i == personagem.getInputKeys().keyLeft) {
                     personagem.moveLeft();
                 } else if (i == personagem.getInputKeys().keyHadouken) {
-                    personagem.hadouken(hadoukenController);
+                    personagem.hadouken(game.getHadoukenController());
                 } else if (i == personagem.getInputKeys().keyDown) {
                     personagem.down();
                 } else if (i == personagem.getInputKeys().keyPunch) {
                     personagem.punch();
-                    personagemController.testPunchHit(personagem);
+                    game.getPersonagemController().testPunchHit(personagem);
                 }
             }
         }
@@ -42,8 +40,8 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        if (!personagemController.getPaused()) {
-            for (Personagem personagem : personagemController.getPersonagens()) {
+        if (game.getGameState() == GameState.RUNNING) {
+            for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
                 if (i == personagem.getInputKeys().keyRight) {
                     personagem.stopMoveRight();
                 } else if (i == personagem.getInputKeys().keyLeft) {
@@ -62,8 +60,8 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int invertedY = Gdx.graphics.getHeight() - screenY;
-        if (screenX >= exitButton.getImgX() && screenX <= exitButton.getImgX() + exitButton.getButtonWidth() &&
-                invertedY >= exitButton.getImgY() && invertedY <= exitButton.getImgY() + exitButton.getButtonHeight()) {
+        if (screenX >= game.getExitButton().getImgX() && screenX <= game.getExitButton().getImgX() + game.getExitButton().getButtonWidth() &&
+                invertedY >= game.getExitButton().getImgY() && invertedY <= game.getExitButton().getImgY() + game.getExitButton().getButtonHeight()) {
             Gdx.app.exit();
         }
         return true;

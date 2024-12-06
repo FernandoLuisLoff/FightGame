@@ -82,7 +82,6 @@ public class GameAssetManager {
         manager.load("sounds/hadouken_sound.wav", Sound.class);
         manager.load("sounds/punch_sound.wav", Sound.class);
         manager.load("sounds/uggh.mp3", Sound.class);
-        manager.load("sounds/you_win.mp3", Sound.class);
 
         manager.finishLoading();
     }

@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
+import com.mygdx.game.MyGdxGame;
 
 public class ExitButton {
-    private final GameAssetManager gameAssetManager;
+    private MyGdxGame game;
+
     private int imgX;
     private int imgY;
     private int buttonWidth;
@@ -44,17 +46,17 @@ public class ExitButton {
         this.buttonHeight = buttonHeight;
     }
 
-    public ExitButton(GameAssetManager gameAssetManager, int buttonWidth, int buttonHeight) {
-        this.gameAssetManager = gameAssetManager;
-        this.buttonWidth = buttonWidth;
-        this.buttonHeight = buttonHeight;
+    public ExitButton(MyGdxGame game) {
+        this.game = game;
+        this.buttonWidth = 100;
+        this.buttonHeight = 100;
 
         imgX = Gdx.graphics.getWidth() - buttonHeight;
         imgY = Gdx.graphics.getHeight() - buttonHeight;
     }
 
-    public void draw(SpriteBatch batch) {
-        batch.draw( gameAssetManager.getManager().get("background/exit.png", Texture.class), imgX, imgY, buttonWidth, buttonHeight );
+    public void draw() {
+        game.getBatch().draw( game.getGameAssetManager().getManager().get("background/exit.png", Texture.class), imgX, imgY, buttonWidth, buttonHeight );
     }
 
 }
