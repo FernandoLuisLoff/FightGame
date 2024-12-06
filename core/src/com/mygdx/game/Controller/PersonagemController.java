@@ -86,7 +86,8 @@ public class PersonagemController {
 
     public void update(Personagem personagem) {
         if (!paused) {
-                if (!personagem.isOffScreen()) {
+            // Tratamento de saida de tela
+            if (!personagem.isOffScreen()) {
                 personagem.setImgX(personagem.getImgX() + personagem.getSpeed());
             } else {
                 if (personagem.getImgX() <= 0) {
@@ -96,6 +97,7 @@ public class PersonagemController {
                 }
             }
 
+            // Tratamento do pulo do personagem
             if (personagem.isJumping()) {
                 personagem.setImgY(personagem.getImgY() + personagem.getJumpVelocity());
                 personagem.setJumpVelocity(personagem.getJumpVelocity() + personagem.getGravity()); // Acelerar para baixo (gravidade)

@@ -1,6 +1,8 @@
 package com.mygdx.game.GameAssetManager;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 public class GameAssetManager {
@@ -66,6 +68,21 @@ public class GameAssetManager {
         manager.load("energybar/energyBar_60.png", Texture.class);
         manager.load("energybar/energyBar_80.png", Texture.class);
         manager.load("energybar/energyBar_100.png", Texture.class);
+
+        // Sounds
+        manager.load("sounds/background_music.mp3", Music.class);
+        manager.load("sounds/1.mp3", Sound.class);
+        manager.load("sounds/2.mp3", Sound.class);
+        manager.load("sounds/3.mp3", Sound.class);
+        manager.load("sounds/end_game.wav", Sound.class);
+        manager.load("sounds/fight.mp3", Sound.class);
+        manager.load("sounds/grunt.mp3", Sound.class);
+        manager.load("sounds/hadooken.mp3", Sound.class);
+        manager.load("sounds/hadouken_out_screen.wav", Sound.class);
+        manager.load("sounds/hadouken_sound.wav", Sound.class);
+        manager.load("sounds/punch_sound.wav", Sound.class);
+        manager.load("sounds/uggh.mp3", Sound.class);
+        manager.load("sounds/you_win.mp3", Sound.class);
 
         manager.finishLoading();
     }

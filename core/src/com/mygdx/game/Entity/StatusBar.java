@@ -6,7 +6,7 @@ import com.mygdx.game.GameAssetManager.GameAssetManager;
 public class StatusBar {
     private final GameAssetManager gameAssetManager;
     private Personagem personagem;
-    private Double timer;
+    private double timer;
     private int widthLifeBar;
     private int heightLifeBar;
     private int widthEnergyBar;
@@ -22,11 +22,11 @@ public class StatusBar {
         this.personagem = personagem;
     }
 
-    public Double getTimer() {
+    public double getTimer() {
         return timer;
     }
 
-    public void setTimer(Double timer) {
+    public void setTimer(double timer) {
         this.timer = timer;
     }
 

@@ -14,9 +14,6 @@ public class StatusBarController {
     private ArrayList<StatusBar> statusBars;
 
     private BitmapFont font;
-
-    private final Double deltaTimer = 0.01;
-
     public ArrayList<StatusBar> getstatusBars() {
         return statusBars;
     }
@@ -37,7 +34,7 @@ public class StatusBarController {
 
     public void update(StatusBar statusBar) {
         if (!personagemController.getPaused()) {
-            Double time = 1.0;
+            double time = 1.0;
             if (statusBar.getTimer() >= time) {
                 int actualEnergy = statusBar.getPersonagem().getEnergy();
                 if (actualEnergy < 100) {
@@ -46,7 +43,7 @@ public class StatusBarController {
                 statusBar.setTimer(statusBar.getTimer() - time);
             }
 
-            statusBar.setTimer(statusBar.getTimer() + deltaTimer);
+            statusBar.setTimer(statusBar.getTimer() + Gdx.graphics.getDeltaTime());
         }
     }
 

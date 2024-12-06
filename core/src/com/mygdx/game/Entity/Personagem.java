@@ -37,6 +37,7 @@ public class Personagem {
     private float gravity = -1f;
     private float groundY;
 
+
     public String getName() {
         return name;
     }
