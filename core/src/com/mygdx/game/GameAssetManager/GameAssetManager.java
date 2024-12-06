@@ -76,11 +76,12 @@ public class GameAssetManager {
         manager.load("sounds/3.mp3", Sound.class);
         manager.load("sounds/end_game.wav", Sound.class);
         manager.load("sounds/fight.mp3", Sound.class);
-        manager.load("sounds/grunt.mp3", Sound.class);
-        manager.load("sounds/hadooken.mp3", Sound.class);
+        manager.load("sounds/hadouken_speak.mp3", Sound.class);
         manager.load("sounds/hadouken_out_screen.wav", Sound.class);
         manager.load("sounds/hadouken_sound.wav", Sound.class);
-        manager.load("sounds/punch_sound.wav", Sound.class);
+        manager.load("sounds/hadouken_hit.wav", Sound.class);
+        manager.load("sounds/punch.mp3", Sound.class);
+        manager.load("sounds/punch_hit.wav", Sound.class);
         manager.load("sounds/uggh.mp3", Sound.class);
 
         manager.finishLoading();

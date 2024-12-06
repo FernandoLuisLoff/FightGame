@@ -7,15 +7,16 @@ import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
+import com.mygdx.game.MyGdxGame;
 
 import java.util.EnumSet;
 
 public class Personagem {
+    private MyGdxGame game;
+
     private String name;
     private int life;
     private int energy;
-
-    private final GameAssetManager gameAssetManager;
 
     private String pathSprites;
     private PersonagemInputKeys inputKeys;
@@ -162,9 +163,9 @@ public class Personagem {
         this.groundY = groundY;
     }
 
-    public Personagem(String name, GameAssetManager gameAssetManager, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(MyGdxGame game, String name, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+        this.game = game;
         this.name = name;
-        this.gameAssetManager = gameAssetManager;
         this.pathSprites = pathSprites;
         this.position = position;
         this.inputKeys = inputKeys;
@@ -182,31 +183,31 @@ public class Personagem {
     public Texture getImg() {
         switch (position) {
             case STOP_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/stop_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_right.png", Texture.class);
             case STOP_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/stop_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_left.png", Texture.class);
             case MOVE_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/move_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/move_right.png", Texture.class);
             case MOVE_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/move_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/move_left.png", Texture.class);
             case JUMP_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/jump_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_right.png", Texture.class);
             case JUMP_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/jump_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_left.png", Texture.class);
             case JUMP_MOVE_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/jump_move_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_move_right.png", Texture.class);
             case JUMP_MOVE_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/jump_move_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_move_left.png", Texture.class);
             case DOWN_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/down_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/down_right.png", Texture.class);
             case DOWN_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/down_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/down_left.png", Texture.class);
             case PUNCH_RIGHT:
-                return gameAssetManager.getManager().get(pathSprites + "/punch_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/punch_right.png", Texture.class);
             case PUNCH_LEFT:
-                return gameAssetManager.getManager().get(pathSprites + "/punch_left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/punch_left.png", Texture.class);
             default:
-                return gameAssetManager.getManager().get(pathSprites + "/stop_right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_right.png", Texture.class);
         }
     }
 
@@ -281,14 +282,17 @@ public class Personagem {
         }
     }
 
-    public void hadouken(HadoukenController hadoukenController) {
+    public void hadouken() {
         if (energy >= 100 && !isDowning()) {
             if (isRight()) {
-                hadoukenController.newHadouken(HadoukenPositions.RIGHT, imgX + 150, imgY + upperHeightImg / 3);
+                game.getHadoukenController().newHadouken(HadoukenPositions.RIGHT, imgX + 150, imgY + upperHeightImg / 3);
             } else if (isLeft()) {
-                hadoukenController.newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 3);
+                game.getHadoukenController().newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 3);
             }
             energy = 0;
+
+            game.getSoundController().hadoukenSpeakSound();
+            game.getSoundController().hadoukenSound();
         }
     }
 
@@ -300,6 +304,8 @@ public class Personagem {
             } else if (isLeft()) {
                 position = PersonagensPositions.PUNCH_LEFT;
             }
+
+            game.getPersonagemController().testPunchHit(this);
         }
     }
 

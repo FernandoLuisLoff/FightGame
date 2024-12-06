@@ -28,8 +28,8 @@ public class StatusBarController {
             statusBars = new ArrayList<StatusBar>(2);
         }
 
-        statusBars.add( new StatusBar(game.getGameAssetManager(), game.getPersonagemController().getPersonagens().get(0), 60, 500, 50, 270, 100, Gdx.graphics.getHeight() - 150 ));
-        statusBars.add( new StatusBar(game.getGameAssetManager(), game.getPersonagemController().getPersonagens().get(1), 60, 500, 50, 270, Gdx.graphics.getWidth() - 600, Gdx.graphics.getHeight() - 150 ));
+        statusBars.add( new StatusBar(game, game.getPersonagemController().getPersonagens().get(0), 60, 500, 50, 270, 100, Gdx.graphics.getHeight() - 150 ));
+        statusBars.add( new StatusBar(game, game.getPersonagemController().getPersonagens().get(1), 60, 500, 50, 270, Gdx.graphics.getWidth() - 600, Gdx.graphics.getHeight() - 150 ));
     }
 
     public void update(StatusBar statusBar) {

@@ -2,9 +2,10 @@ package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
+import com.mygdx.game.MyGdxGame;
 
 public class StatusBar {
-    private final GameAssetManager gameAssetManager;
+    private MyGdxGame game;
     private Personagem personagem;
     private double timer;
     private int widthLifeBar;
@@ -82,8 +83,8 @@ public class StatusBar {
         this.imgY = imgY;
     }
 
-    public StatusBar(GameAssetManager gameAssetManager, Personagem personagem, int heightLifeBar, int widthLifeBar, int heightEnergyBar, int widthEnergyBar, int imgX, int imgY) {
-        this.gameAssetManager = gameAssetManager;
+    public StatusBar(MyGdxGame game, Personagem personagem, int heightLifeBar, int widthLifeBar, int heightEnergyBar, int widthEnergyBar, int imgX, int imgY) {
+        this.game = game;
         this.personagem = personagem;
         this.widthLifeBar = widthLifeBar;
         this.heightLifeBar = heightLifeBar;
@@ -97,31 +98,31 @@ public class StatusBar {
 
     public Texture getLifeBar() {
         if (personagem.getLife() >= 100) {
-            return gameAssetManager.getManager().get("lifebar/life-bar_100.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("lifebar/life-bar_100.png", Texture.class);
         } else if (personagem.getLife() < 100 && personagem.getLife() >= 75) {
-                return gameAssetManager.getManager().get("lifebar/life-bar_75.png", Texture.class);
+                return game.getGameAssetManager().getManager().get("lifebar/life-bar_75.png", Texture.class);
         } else if (personagem.getLife() < 75 && personagem.getLife() >= 50) {
-            return gameAssetManager.getManager().get("lifebar/life-bar_50.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("lifebar/life-bar_50.png", Texture.class);
         } else if (personagem.getLife() < 50 && personagem.getLife() >= 25) {
-            return gameAssetManager.getManager().get("lifebar/life-bar_25.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("lifebar/life-bar_25.png", Texture.class);
         } else {
-            return gameAssetManager.getManager().get("lifebar/life-bar_10.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("lifebar/life-bar_10.png", Texture.class);
         }
     }
 
     public Texture getEnergyBar() {
         if (personagem.getEnergy() >= 100) {
-            return gameAssetManager.getManager().get("energybar/energyBar_100.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_100.png", Texture.class);
         } else if (personagem.getEnergy() <= 80 && personagem.getEnergy() > 60) {
-            return gameAssetManager.getManager().get("energybar/energyBar_80.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_80.png", Texture.class);
         } else if (personagem.getEnergy() <= 60 && personagem.getEnergy() > 40) {
-            return gameAssetManager.getManager().get("energybar/energyBar_60.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_60.png", Texture.class);
         } else if (personagem.getEnergy() <= 40 && personagem.getEnergy() > 20) {
-            return gameAssetManager.getManager().get("energybar/energyBar_40.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_40.png", Texture.class);
         } else if (personagem.getEnergy() <= 20 && personagem.getEnergy() > 0) {
-            return gameAssetManager.getManager().get("energybar/energyBar_20.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_20.png", Texture.class);
         } else {
-            return gameAssetManager.getManager().get("energybar/energyBar_0.png", Texture.class);
+            return game.getGameAssetManager().getManager().get("energybar/energyBar_0.png", Texture.class);
         }
     }
 }

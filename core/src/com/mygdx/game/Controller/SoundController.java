@@ -24,15 +24,17 @@ public class SoundController {
         this.game = game;
 
         background_music = this.game.getGameAssetManager().getManager().get("sounds/background_music.mp3", Music.class);
+        background_music.setLooping(true);
+        background_music.setVolume(0.8f);
 
         layout = new GlyphLayout();
-        font= new BitmapFont();
+        font = new BitmapFont();
         font.getData().setScale(6f);
 
-        initCount();
+        startCountSound();
     }
 
-    public void initCount() {
+    public void startCountSound() {
         Sound fightSound = game.getGameAssetManager().getManager().get("sounds/fight.mp3", Sound.class);
         Sound sound_1 = game.getGameAssetManager().getManager().get("sounds/1.mp3", Sound.class);
         Sound sound_2 = game.getGameAssetManager().getManager().get("sounds/2.mp3", Sound.class);
@@ -69,13 +71,41 @@ public class SoundController {
             @Override
             public void run() {
                 textFont = "";
-                background_music.setLooping(true);
-                background_music.setVolume(0.6f);
                 background_music.play();
 
                 game.setGameState( GameState.RUNNING );
             }
-        }, 4.0f);
+        }, 3.5f);
+    }
+
+    public void hadoukenSpeakSound() {
+        Sound hadoukenSpeakSound = game.getGameAssetManager().getManager().get("sounds/hadouken_speak.mp3", Sound.class);
+        hadoukenSpeakSound.play();
+    }
+
+    public void hadoukenSound() {
+        Sound hadoukenSound = game.getGameAssetManager().getManager().get("sounds/hadouken_sound.wav", Sound.class);
+        hadoukenSound.play();
+    }
+
+    public void hadoukenOutScreenSound() {
+        Sound hadoukenOutScreenSound = game.getGameAssetManager().getManager().get("sounds/hadouken_out_screen.wav", Sound.class);
+        hadoukenOutScreenSound.play();
+    }
+
+    public void hadoukenHitSound() {
+        Sound hadoukenHitSound = game.getGameAssetManager().getManager().get("sounds/hadouken_hit.wav", Sound.class);
+        hadoukenHitSound.play();
+    }
+
+    public void punchSound() {
+        Sound punchSound = game.getGameAssetManager().getManager().get("sounds/punch.mp3", Sound.class);
+        punchSound.play();
+    }
+
+    public void punchHitSound() {
+        Sound punchHitSound = game.getGameAssetManager().getManager().get("sounds/punch_hit.wav", Sound.class);
+        punchHitSound.play();
     }
 
     public void endGameSound(String namePlayer) {

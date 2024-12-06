@@ -75,8 +75,7 @@ public class MyGdxGame extends Game {
 		lifeBarController.init(this);
 		soundController.init(this);
 
-		InputProcessor personagemInputProcessor = new InputProcessor(this);
-		Gdx.input.setInputProcessor(personagemInputProcessor);
+		Gdx.input.setInputProcessor( new InputProcessor(this) );
 	}
 
 	@Override
@@ -84,7 +83,7 @@ public class MyGdxGame extends Game {
 		Gdx.graphics.setTitle("FightGame");
 
 		batch.begin();
-		batch.draw( gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		exitButton.draw();
 		personagemController.render();

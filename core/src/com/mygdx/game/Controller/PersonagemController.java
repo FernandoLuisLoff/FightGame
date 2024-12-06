@@ -36,10 +36,10 @@ public class PersonagemController {
         float heightImg = 420;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( "Player 1", game.getGameAssetManager(), "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.game, "Player 1", "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( "Player 2", game.getGameAssetManager(), "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.game, "Player 2", "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
     }
 
     public void testPunchHit(Personagem personagem) {
@@ -54,6 +54,9 @@ public class PersonagemController {
 
                 if (outroPersonagem.hit(x, personagem.getImgY() + personagem.getUpperHeightImg()/2)) {
                     outroPersonagem.setLife(outroPersonagem.getLife() - 10);
+                    game.getSoundController().punchHitSound();
+                } else {
+                    game.getSoundController().punchSound();
                 }
             }
         }
@@ -67,6 +70,7 @@ public class PersonagemController {
             if (personagem.hit(hadouken.getImgX(), hadouken.getImgY())) {
                 personagem.setLife(personagem.getLife() - 50);
                 iterator.remove();
+                game.getSoundController().hadoukenHitSound();
             }
         }
     }
@@ -121,7 +125,6 @@ public class PersonagemController {
             }
 
             game.getBatch().draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
-
 
             if (personagem.getLife() <= 0 && personagemDeath == null) {
                 personagemDeath = personagem;

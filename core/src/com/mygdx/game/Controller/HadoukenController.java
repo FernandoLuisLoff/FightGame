@@ -31,7 +31,7 @@ public class HadoukenController {
     }
 
     public void newHadouken(HadoukenPositions hadoukenPositions, Float imgX, Float imgY) {
-        hadoukens.add( new Hadouken( game.getGameAssetManager(), hadoukenPositions, 160, 160, imgX, imgY, 10));
+        hadoukens.add( new Hadouken( game, hadoukenPositions, 160, 160, imgX, imgY, 10));
     }
 
     public void update(Hadouken hadouken) {
@@ -53,6 +53,7 @@ public class HadoukenController {
                 game.getBatch().draw( hadouken.getImg(), hadouken.getImgX() - hadouken.getWidthImg() / 2, hadouken.getImgY() - hadouken.getHeightImg() / 2, hadouken.getWidthImg(), hadouken.getHeightImg() );
             } else {
                 iterator.remove();
+                game.getSoundController().hadoukenOutScreenSound();
             }
         }
     }

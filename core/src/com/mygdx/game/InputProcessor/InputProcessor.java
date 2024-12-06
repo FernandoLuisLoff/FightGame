@@ -26,12 +26,11 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
                 } else if (i == personagem.getInputKeys().keyLeft) {
                     personagem.moveLeft();
                 } else if (i == personagem.getInputKeys().keyHadouken) {
-                    personagem.hadouken(game.getHadoukenController());
+                    personagem.hadouken();
                 } else if (i == personagem.getInputKeys().keyDown) {
                     personagem.down();
                 } else if (i == personagem.getInputKeys().keyPunch) {
                     personagem.punch();
-                    game.getPersonagemController().testPunchHit(personagem);
                 }
             }
         }

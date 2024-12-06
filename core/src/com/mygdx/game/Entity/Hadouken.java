@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
+import com.mygdx.game.MyGdxGame;
 
 public class Hadouken {
-    private final GameAssetManager gameAssetManager;
+    private MyGdxGame game;
 
     int widthImg;
     int heightImg;
@@ -68,8 +69,8 @@ public class Hadouken {
         this.imgY = imgY;
     }
 
-    public Hadouken(GameAssetManager gameAssetManager, HadoukenPositions position, int widthImg, int heightImg, float imgX, float imgY, float speed) {
-        this.gameAssetManager = gameAssetManager;
+    public Hadouken(MyGdxGame game, HadoukenPositions position, int widthImg, int heightImg, float imgX, float imgY, float speed) {
+        this.game = game;
         this.position = position;
         this.widthImg = widthImg;
         this.heightImg = heightImg;
@@ -81,11 +82,11 @@ public class Hadouken {
     public Texture getImg() {
         switch (position) {
             case RIGHT:
-                return gameAssetManager.getManager().get("hadouken/hadouken-right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get("hadouken/hadouken-right.png", Texture.class);
             case LEFT:
-                return gameAssetManager.getManager().get("hadouken/hadouken-left.png", Texture.class);
+                return game.getGameAssetManager().getManager().get("hadouken/hadouken-left.png", Texture.class);
             default:
-                return gameAssetManager.getManager().get("hadouken/hadouken-right.png", Texture.class);
+                return game.getGameAssetManager().getManager().get("hadouken/hadouken-right.png", Texture.class);
         }
     }
 
