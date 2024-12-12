@@ -34,12 +34,13 @@ public class PersonagemController {
 
         float widhtImg = 240;
         float heightImg = 420;
+        float imgY = heightImg/2 + 50;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( this.game, "Player 1", "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.game, "Player 1", "players/player1", PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( this.game, "Player 2", "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4 ));
+        personagens.add( new Personagem( this.game, "Player 2", "players/player2", PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
     }
 
     public void testPunchHit(Personagem personagem) {
@@ -93,8 +94,8 @@ public class PersonagemController {
                 personagem.setImgY(personagem.getImgY() + personagem.getJumpVelocity());
                 personagem.setJumpVelocity(personagem.getJumpVelocity() + personagem.getGravity()); // Acelerar para baixo (gravidade)
 
-                if (personagem.getImgY() <= personagem.getGroundY()) { // Se atingir o chão
-                    personagem.setImgY(personagem.getGroundY());
+                if (personagem.getImgY() <= personagem.getGround()) { // Se atingir o chão
+                    personagem.setImgY(personagem.getGround());
                     if (personagem.getPosition() == PersonagensPositions.JUMP_RIGHT) {
                         personagem.setPosition(PersonagensPositions.STOP_RIGHT);
                     } else if (personagem.getPosition() == PersonagensPositions.JUMP_LEFT) {
@@ -117,14 +118,7 @@ public class PersonagemController {
         for (Personagem personagem : personagens) {
             update(personagem);
 
-            float heightImg;
-            if (personagem.isDowning()) {
-                heightImg = personagem.getDownHeightImg();
-            } else {
-                heightImg = personagem.getUpperHeightImg();
-            }
-
-            game.getBatch().draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), heightImg );
+            game.getBatch().draw( personagem.getImg(), personagem.getImgX() - personagem.getWidthImg()/2, personagem.getImgY() - personagem.getUpperHeightImg()/2, personagem.getWidthImg(), personagem.getHeightImg() );
 
             if (personagem.getLife() <= 0 && personagemDeath == null) {
                 personagemDeath = personagem;

@@ -23,7 +23,6 @@ public class Personagem {
 
     private float widthImg;
     private float upperHeightImg;
-
     private float downHeightImg;
 
     private float imgX;
@@ -36,7 +35,7 @@ public class Personagem {
     // Atributos para o pulo
     private float jumpVelocity = 0;
     private float gravity = -1f;
-    private float groundY;
+    private float ground;
 
 
     public String getName() {
@@ -155,12 +154,12 @@ public class Personagem {
         this.gravity = gravity;
     }
 
-    public float getGroundY() {
-        return groundY;
+    public float getGround() {
+        return ground;
     }
 
-    public void setGroundY(float groundY) {
-        this.groundY = groundY;
+    public void setGround(float ground) {
+        this.ground = ground;
     }
 
     public Personagem(MyGdxGame game, String name, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
@@ -174,7 +173,7 @@ public class Personagem {
         this.downHeightImg = heightImg/2;
         this.imgX = imgX;
         this.imgY = imgY;
-        this.groundY = imgY;
+        this.ground = imgY;
 
         life = 100;
         energy = 0;
@@ -208,6 +207,14 @@ public class Personagem {
                 return game.getGameAssetManager().getManager().get(pathSprites + "/punch_left.png", Texture.class);
             default:
                 return game.getGameAssetManager().getManager().get(pathSprites + "/stop_right.png", Texture.class);
+        }
+    }
+
+    public float getHeightImg() {
+        if (isDowning()) {
+            return downHeightImg;
+        } else {
+            return upperHeightImg;
         }
     }
 
@@ -366,7 +373,10 @@ public class Personagem {
 
     public boolean hit(float x, float y) {
         if (!isDowning()) {
-            return ((x > (imgX - widthImg/2) && x < (imgX + widthImg/2)) && (y > (imgY - upperHeightImg/2) && y < imgY + upperHeightImg));
+            float heightImg = getHeightImg();
+            Boolean widthHitBoxTest = x > (imgX - widthImg/2) &&  x < (imgX + widthImg/2);
+            Boolean heightHitBoxTest = y > (imgY - heightImg/2) && y < (imgY + heightImg/2);
+            return widthHitBoxTest && heightHitBoxTest;
         } else {
             return false;
         }
