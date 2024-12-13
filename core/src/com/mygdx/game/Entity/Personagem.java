@@ -1,11 +1,11 @@
 package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.Controller.HadoukenController;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
-import com.mygdx.game.GameAssetManager.GameAssetManager;
+import com.mygdx.game.GameAssetManager.TexturesPlayer;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
 
@@ -18,7 +18,8 @@ public class Personagem {
     private int life;
     private int energy;
 
-    private String pathSprites;
+    private Sprite sprite;
+    private TexturesPlayer playerTextures;
     private PersonagemInputKeys inputKeys;
 
     private float widthImg;
@@ -52,14 +53,6 @@ public class Personagem {
 
     public void setLife(int life) {
         this.life = life;
-    }
-
-    public String getPathSprites() {
-        return pathSprites;
-    }
-
-    public void setPathSprites(String pathSprites) {
-        this.pathSprites = pathSprites;
     }
 
     public void setDownHeightImg(float downHeightImg) {
@@ -162,10 +155,10 @@ public class Personagem {
         this.ground = ground;
     }
 
-    public Personagem(MyGdxGame game, String name, String pathSprites, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(MyGdxGame game, String name, TexturesPlayer playerTextures, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
         this.game = game;
         this.name = name;
-        this.pathSprites = pathSprites;
+        this.playerTextures = playerTextures;
         this.position = position;
         this.inputKeys = inputKeys;
         this.widthImg = widthImg;
@@ -175,39 +168,62 @@ public class Personagem {
         this.imgY = imgY;
         this.ground = imgY;
 
+        sprite = new Sprite(this.playerTextures.getPlayerStop());
+
         life = 100;
         energy = 0;
     }
 
-    public Texture getImg() {
+    public Sprite getImg() {
+        sprite.setPosition(imgX - widthImg/2, imgY - upperHeightImg/2);
+        sprite.setSize(widthImg, getHeightImg());
+
         switch (position) {
             case STOP_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerStop());
+                break;
             case STOP_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerStop());
+                break;
             case MOVE_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/move_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerMove());
+                break;
             case MOVE_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/move_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerMove());
+                break;
             case JUMP_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerJump());
+                break;
             case JUMP_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerJump());
+                break;
             case JUMP_MOVE_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_move_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerJumpMove());
+                break;
             case JUMP_MOVE_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/jump_move_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerJumpMove());
+                break;
             case DOWN_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/down_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerDown());
+                break;
             case DOWN_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/down_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerDown());
+                break;
             case PUNCH_RIGHT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/punch_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerPunch());
+                break;
             case PUNCH_LEFT:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/punch_left.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerPunch());
+                break;
             default:
-                return game.getGameAssetManager().getManager().get(pathSprites + "/stop_right.png", Texture.class);
+                sprite.setTexture(playerTextures.getPlayerStop());
         }
+
+        if ((isRight() && sprite.isFlipX()) || (isLeft() && !sprite.isFlipX())) {
+            sprite.flip(true, false);
+        }
+
+        return sprite;
     }
 
     public float getHeightImg() {

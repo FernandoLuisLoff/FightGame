@@ -56,7 +56,7 @@ public class ExitButton {
     }
 
     public void draw() {
-        game.getBatch().draw( game.getGameAssetManager().getManager().get("background/exit.png", Texture.class), imgX, imgY, buttonWidth, buttonHeight );
+        game.getBatch().draw( game.getGameAssetManager().getExit(), imgX, imgY, buttonWidth, buttonHeight );
     }
 
 }

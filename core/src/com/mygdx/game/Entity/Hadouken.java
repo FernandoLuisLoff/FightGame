@@ -1,24 +1,28 @@
 package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Enum.HadoukenPositions;
-import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.MyGdxGame;
 
 public class Hadouken {
     private MyGdxGame game;
 
-    int widthImg;
-    int heightImg;
+    private Animation<TextureRegion> animation;
+    private float stateTime;
+    private Sprite sprite;
 
-    float imgX;
-    float imgY;
+    private int widthImg;
+    private int heightImg;
 
-    HadoukenPositions position;
+    private float imgX;
+    private float imgY;
 
-    float speed;
+    private HadoukenPositions position;
+
+    private float speed;
 
     public HadoukenPositions getPosition() {
         return position;
@@ -77,20 +81,38 @@ public class Hadouken {
         this.imgX = imgX;
         this.imgY = imgY;
         this.speed = speed;
-    }
 
-    public Texture getImg() {
-        switch (position) {
-            case RIGHT:
-                return game.getGameAssetManager().getManager().get("hadouken/hadouken-right.png", Texture.class);
-            case LEFT:
-                return game.getGameAssetManager().getManager().get("hadouken/hadouken-left.png", Texture.class);
-            default:
-                return game.getGameAssetManager().getManager().get("hadouken/hadouken-right.png", Texture.class);
-        }
+        stateTime = 0f;
+        animation = game.getGameAssetManager().getAnimationHadouken().getAnimation();
+        sprite = new Sprite(animation.getKeyFrame(stateTime));
     }
 
     public boolean isOffScreen() {
         return imgX > Gdx.graphics.getWidth() + 50 || imgX < -50;
+    }
+
+    public void render() {
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame = animation.getKeyFrame(stateTime);
+
+        sprite.setRegion(currentFrame);
+        sprite.setSize(widthImg, heightImg);
+        sprite.setPosition(imgX - widthImg / 2, imgY - heightImg / 2);
+
+        switch (position) {
+            case RIGHT:
+                if (sprite.isFlipX()) {
+                    sprite.flip(true, false);
+                }
+                break;
+            case LEFT:
+                if (!sprite.isFlipX()) {
+                    sprite.flip(true, false);
+                }
+                break;
+        }
+
+        // Renderizar o sprite
+        sprite.draw(game.getBatch());
     }
 }

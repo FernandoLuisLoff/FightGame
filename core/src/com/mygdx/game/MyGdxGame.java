@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Controller.HadoukenController;
@@ -23,7 +22,7 @@ public class MyGdxGame extends Game {
 	private final SoundController soundController = new SoundController();
 	private final PersonagemController personagemController = new PersonagemController();
 	private final HadoukenController hadoukenController = new HadoukenController();
-	private final StatusBarController lifeBarController = new StatusBarController();
+	private final StatusBarController statusBarController = new StatusBarController();
 
 	private GameState gameState = GameState.PAUSED;
 
@@ -51,8 +50,8 @@ public class MyGdxGame extends Game {
 		return hadoukenController;
 	}
 
-	public StatusBarController getLifeBarController() {
-		return lifeBarController;
+	public StatusBarController getStatusBarController() {
+		return statusBarController;
 	}
 
 	public GameState getGameState() {
@@ -72,7 +71,7 @@ public class MyGdxGame extends Game {
 
 		hadoukenController.init(this);
 		personagemController.init(this);
-		lifeBarController.init(this);
+		statusBarController.init(this);
 		soundController.init(this);
 
 		Gdx.input.setInputProcessor( new InputProcessor(this) );
@@ -83,12 +82,12 @@ public class MyGdxGame extends Game {
 		Gdx.graphics.setTitle("FightGame");
 
 		batch.begin();
-		batch.draw(gameAssetManager.getManager().get("background/background.jpg", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(gameAssetManager.getBackground(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		exitButton.draw();
 		personagemController.render();
 		hadoukenController.render();
-		lifeBarController.render();
+		statusBarController.render();
 		soundController.render();
 
 		batch.end();
@@ -98,7 +97,7 @@ public class MyGdxGame extends Game {
 	public void dispose () {
 		batch.dispose();
 		gameAssetManager.dispose();
-		lifeBarController.dispose();
+		statusBarController.dispose();
 		soundController.dispose();
 	}
 }
