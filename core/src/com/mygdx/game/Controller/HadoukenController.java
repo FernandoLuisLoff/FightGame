@@ -34,7 +34,7 @@ public class HadoukenController {
     }
 
     public void newHadouken(HadoukenPositions hadoukenPositions, Float imgX, Float imgY) {
-        hadoukens.add( new Hadouken( game, hadoukenPositions, 160, 160, imgX, imgY, 10));
+        hadoukens.add( new Hadouken( game, hadoukenPositions, 110, 110, imgX, imgY, 10));
     }
 
     public void update(Hadouken hadouken) {

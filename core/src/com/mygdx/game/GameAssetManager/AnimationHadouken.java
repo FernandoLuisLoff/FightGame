@@ -19,11 +19,12 @@ public class AnimationHadouken {
 
     private void initAnimationHadouken() {
         Texture hadoukenSheet = manager.getHadouken();
-        TextureRegion[][] tempFrames = TextureRegion.split(hadoukenSheet, hadoukenSheet.getWidth() / 2, hadoukenSheet.getHeight());
+        TextureRegion[][] tempFrames = TextureRegion.split(hadoukenSheet, hadoukenSheet.getWidth() / 7, hadoukenSheet.getHeight());
 
-        TextureRegion[] frames = new TextureRegion[2];
-        frames[0] = tempFrames[0][0];
-        frames[1] = tempFrames[0][1];
+        TextureRegion[] frames = new TextureRegion[7];
+        for (int i=0; i < tempFrames[0].length; i++) {
+            frames[i] = tempFrames[0][i];
+        }
 
         animation = new Animation<>(0.1f, frames);
         animation.setPlayMode(Animation.PlayMode.LOOP);
