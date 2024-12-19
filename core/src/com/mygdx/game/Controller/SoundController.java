@@ -117,7 +117,7 @@ public class SoundController {
             @Override
             public void run() {
                 end_game.play();
-                textFont = namePlayer + " levou uma surra!";
+                textFont = namePlayer + " perdeu!";
             }
         }, 1.0f);
     }
