@@ -20,20 +20,23 @@ public class GameAssetManager {
     private final String pathHadouken = "hadouken/hadouken.png";
 
     private TexturesPlayer player1Textures;
+    private AnimationPlayer animationPlayer1;
     private final String pathPlayer1Down = "players/player1/down.png";
     private final String pathPlayer1JumpMove = "players/player1/jump_move.png";
     private final String pathPlayer1Jump = "players/player1/jump.png";
-    private final String pathPlayer1Move = "players/player1/move.png";
+    private final String pathPlayer1Move = "players/player1/player_move.png";
     private final String pathPlayer1Punch = "players/player1/punch.png";
-    private final String pathPlayer1Stop = "players/player1/stop.png";
+    private final String pathPlayer1Stop = "players/player1/player_stop.png";
 
     private TexturesPlayer player2Textures;
+
+    private AnimationPlayer animationPlayer2;
     private final String pathPlayer2Down = "players/player2/down.png";
     private final String pathPlayer2JumpMove = "players/player2/jump_move.png";
     private final String pathPlayer2Jump = "players/player2/jump.png";
-    private final String pathPlayer2Move = "players/player2/move.png";
+    private final String pathPlayer2Move = "players/player2/player_move.png";
     private final String pathPlayer2Punch = "players/player2/punch.png";
-    private final String pathPlayer2Stop = "players/player2/stop.png";
+    private final String pathPlayer2Stop = "players/player2/player_stop.png";
 
     private final String pathLifeBar10 = "lifebar/life-bar_10.png";
     private final String pathLifeBar25 = "lifebar/life-bar_25.png";
@@ -142,6 +145,8 @@ public class GameAssetManager {
 
         manager.finishLoading();
 
+        animationPlayer1 = new AnimationPlayer(player1Textures);
+        animationPlayer2 = new AnimationPlayer(player2Textures);
         animationHadouken = new AnimationHadouken(this);
     }
 
@@ -167,6 +172,14 @@ public class GameAssetManager {
 
     public TexturesPlayer getPlayer2Textures() {
         return player2Textures;
+    }
+
+    public AnimationPlayer getAnimationPlayer1() {
+        return animationPlayer1;
+    }
+
+    public AnimationPlayer getAnimationPlayer2() {
+        return animationPlayer2;
     }
 
     public Texture getLifeBar10() {

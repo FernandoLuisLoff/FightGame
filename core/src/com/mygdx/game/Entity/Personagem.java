@@ -1,10 +1,10 @@
 package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
+import com.mygdx.game.GameAssetManager.AnimationPlayer;
 import com.mygdx.game.GameAssetManager.TexturesPlayer;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
@@ -13,13 +13,14 @@ import java.util.EnumSet;
 
 public class Personagem {
     private MyGdxGame game;
-
+    private float stateTime;
     private String name;
     private int life;
     private int energy;
 
     private Sprite sprite;
     private TexturesPlayer playerTextures;
+    private AnimationPlayer animationPlayer;
     private PersonagemInputKeys inputKeys;
 
     private float widthImg;
@@ -155,9 +156,10 @@ public class Personagem {
         this.ground = ground;
     }
 
-    public Personagem(MyGdxGame game, String name, TexturesPlayer playerTextures, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(MyGdxGame game, String name, AnimationPlayer animationPlayer, TexturesPlayer playerTextures, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
         this.game = game;
         this.name = name;
+        this.animationPlayer = animationPlayer;
         this.playerTextures = playerTextures;
         this.position = position;
         this.inputKeys = inputKeys;
@@ -175,21 +177,22 @@ public class Personagem {
     }
 
     public Sprite getImg() {
+        stateTime += Gdx.graphics.getDeltaTime();
         sprite.setPosition(imgX - widthImg/2, imgY - upperHeightImg/2);
         sprite.setSize(widthImg, getHeightImg());
 
         switch (position) {
             case STOP_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerStop());
+                sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
                 break;
             case STOP_LEFT:
-                sprite.setTexture(playerTextures.getPlayerStop());
+                sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
                 break;
             case MOVE_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerMove());
+                sprite.setRegion(animationPlayer.getAnimationMove().getKeyFrame(stateTime));
                 break;
             case MOVE_LEFT:
-                sprite.setTexture(playerTextures.getPlayerMove());
+                sprite.setRegion(animationPlayer.getAnimationMove().getKeyFrame(stateTime));
                 break;
             case JUMP_RIGHT:
                 sprite.setTexture(playerTextures.getPlayerJump());

@@ -37,10 +37,10 @@ public class PersonagemController {
         float imgY = heightImg/2 + 50;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( this.game, "Player 1", this.game.getGameAssetManager().getPlayer1Textures(), PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
+        personagens.add( new Personagem( this.game, "Player 1", this.game.getGameAssetManager().getAnimationPlayer1(), this.game.getGameAssetManager().getPlayer1Textures(), PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( this.game, "Player 2", this.game.getGameAssetManager().getPlayer2Textures(), PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
+        personagens.add( new Personagem( this.game, "Player 2", this.game.getGameAssetManager().getAnimationPlayer2(), this.game.getGameAssetManager().getPlayer2Textures(), PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
     }
 
     public void testPunchHit(Personagem personagem) {
