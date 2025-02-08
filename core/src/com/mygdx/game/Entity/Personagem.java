@@ -13,13 +13,12 @@ import java.util.EnumSet;
 
 public class Personagem {
     private MyGdxGame game;
-    private float stateTime;
+    private float stateTime = 0;
     private String name;
     private int life;
     private int energy;
 
     private Sprite sprite;
-    private TexturesPlayer playerTextures;
     private AnimationPlayer animationPlayer;
     private PersonagemInputKeys inputKeys;
 
@@ -31,6 +30,8 @@ public class Personagem {
     private float imgY;
 
     private PersonagensPositions position;
+
+    private boolean isRight;
 
     private float speed = 0;
 
@@ -46,6 +47,10 @@ public class Personagem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
     }
 
     public int getLife() {
@@ -156,12 +161,12 @@ public class Personagem {
         this.ground = ground;
     }
 
-    public Personagem(MyGdxGame game, String name, AnimationPlayer animationPlayer, TexturesPlayer playerTextures, PersonagensPositions position, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(MyGdxGame game, String name, AnimationPlayer animationPlayer, boolean isRight, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
         this.game = game;
         this.name = name;
         this.animationPlayer = animationPlayer;
-        this.playerTextures = playerTextures;
-        this.position = position;
+        this.isRight = isRight;
+        this.position = PersonagensPositions.STOP;
         this.inputKeys = inputKeys;
         this.widthImg = widthImg;
         this.upperHeightImg = heightImg;
@@ -170,7 +175,7 @@ public class Personagem {
         this.imgY = imgY;
         this.ground = imgY;
 
-        sprite = new Sprite(this.playerTextures.getPlayerStop());
+        sprite = new Sprite(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
 
         life = 100;
         energy = 0;
@@ -179,47 +184,65 @@ public class Personagem {
     public Sprite getImg() {
         stateTime += Gdx.graphics.getDeltaTime();
         sprite.setPosition(imgX - widthImg/2, imgY - upperHeightImg/2);
-        sprite.setSize(widthImg, getHeightImg());
+        sprite.setSize(widthImg, upperHeightImg);
 
         switch (position) {
-            case STOP_RIGHT:
-                sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
+            case STOP:
+                if (life > 25) {
+                    sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
+                } else {
+                    sprite.setRegion(animationPlayer.getAnimationStunned().getKeyFrame(stateTime));
+                }
                 break;
-            case STOP_LEFT:
-                sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
-                break;
-            case MOVE_RIGHT:
+            case MOVE:
                 sprite.setRegion(animationPlayer.getAnimationMove().getKeyFrame(stateTime));
                 break;
-            case MOVE_LEFT:
-                sprite.setRegion(animationPlayer.getAnimationMove().getKeyFrame(stateTime));
+            case JUMP:
+                sprite.setRegion(animationPlayer.getFrameJump(jumpVelocity));
                 break;
-            case JUMP_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerJump());
+            case JUMP_MOVE:
+                sprite.setRegion(animationPlayer.getFrameJump(jumpVelocity));
                 break;
-            case JUMP_LEFT:
-                sprite.setTexture(playerTextures.getPlayerJump());
+            case DOWNING:
+                sprite.setRegion(animationPlayer.getAnimationDowning().getKeyFrame(stateTime));
                 break;
-            case JUMP_MOVE_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerJumpMove());
+            case UPPERING:
+                sprite.setRegion(animationPlayer.getAnimationUppering().getKeyFrame(stateTime));
+                if (stateTime > animationPlayer.getAnimationUppering().getAnimationDuration()) {
+                    position = PersonagensPositions.STOP;
+                    stateTime = 0;
+                }
                 break;
-            case JUMP_MOVE_LEFT:
-                sprite.setTexture(playerTextures.getPlayerJumpMove());
+            case HITING:
+                sprite.setRegion(animationPlayer.getAnimationHiting().getKeyFrame(stateTime));
+                if (stateTime > animationPlayer.getAnimationHiting().getAnimationDuration()) {
+                    position = PersonagensPositions.STOP;
+                    stateTime = 0;
+                }
                 break;
-            case DOWN_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerDown());
+            case PUNCH:
+                sprite.setRegion(animationPlayer.getAnimationPunch().getKeyFrame(stateTime));
+                if (stateTime > animationPlayer.getAnimationPunch().getAnimationDuration()) {
+                    position = PersonagensPositions.STOP;
+                    stateTime = 0;
+                }
                 break;
-            case DOWN_LEFT:
-                sprite.setTexture(playerTextures.getPlayerDown());
+            case HADOUKEN_ATTACKING:
+                sprite.setRegion(animationPlayer.getAnimationHadoukenAttack().getKeyFrame(stateTime));
+                if (stateTime > animationPlayer.getAnimationHadoukenAttack().getAnimationDuration()) {
+                    hadouken();
+                    position = PersonagensPositions.STOP;
+                    stateTime = 0;
+                }
                 break;
-            case PUNCH_RIGHT:
-                sprite.setTexture(playerTextures.getPlayerPunch());
+            case KO:
+                sprite.setRegion(animationPlayer.getAnimationKO().getKeyFrame(stateTime));
                 break;
-            case PUNCH_LEFT:
-                sprite.setTexture(playerTextures.getPlayerPunch());
+            case WINNER:
+                sprite.setRegion(animationPlayer.getAnimationWinner().getKeyFrame(stateTime));
                 break;
             default:
-                sprite.setTexture(playerTextures.getPlayerStop());
+                sprite.setRegion(animationPlayer.getAnimationStop().getKeyFrame(stateTime));
         }
 
         if ((isRight() && sprite.isFlipX()) || (isLeft() && !sprite.isFlipX())) {
@@ -238,59 +261,49 @@ public class Personagem {
     }
 
     public void moveRight() {
-        if (!isDowning() && !isPunching()) {
+        if (!isDowning() && !isPunching() && !isHiting() && !isHadoukenAttacking() && !isHadoukenAttacking()) {
             if (!isJumping()) {
-                position = PersonagensPositions.MOVE_RIGHT;
+                position = PersonagensPositions.MOVE;
             } else {
-                position = PersonagensPositions.JUMP_MOVE_RIGHT;
+                position = PersonagensPositions.JUMP_MOVE;
             }
+
+            isRight = true;
             speed = 10;
         }
     }
 
-    public void stopMoveRight() {
-        if (!isDowning() && !isPunching()) {
-            if (!isJumping()) {
-                position = PersonagensPositions.STOP_RIGHT;
-            } else {
-                position = PersonagensPositions.JUMP_RIGHT ;
-            }
-            speed = 0;
-        }
-    }
-
     public void moveLeft() {
-        if (!isDowning() && !isPunching()) {
+        if (!isDowning() && !isPunching() && !isHiting() && !isHadoukenAttacking() && !isHadoukenAttacking()) {
             if (!isJumping()) {
-                position = PersonagensPositions.MOVE_LEFT;
+                position = PersonagensPositions.MOVE;
             } else {
-                position = PersonagensPositions.JUMP_MOVE_LEFT;
+                position = PersonagensPositions.JUMP_MOVE;
             }
+
+            isRight = false;
             speed = -10;
         }
     }
 
-    public void stopMoveLeft() {
-        if (!isDowning() && !isPunching()) {
+    public void stopMove() {
+        if (!isDowning() && !isPunching() && !isHiting() && !isHadoukenAttacking() && !isHadoukenAttacking()) {
             if (!isJumping()) {
-                position = PersonagensPositions.STOP_LEFT;
+                position = PersonagensPositions.STOP;
             } else {
-                position = PersonagensPositions.JUMP_LEFT;
+                position = PersonagensPositions.JUMP;
             }
+
             speed = 0;
         }
     }
 
     public void jump() {
         if (!isJumping()) {
-            if (position == PersonagensPositions.STOP_RIGHT) {
-                position = PersonagensPositions.JUMP_RIGHT;
-            } else if (position == PersonagensPositions.STOP_LEFT) {
-                position = PersonagensPositions.JUMP_LEFT;
-            } else if (position == PersonagensPositions.MOVE_RIGHT) {
-                position = PersonagensPositions.JUMP_MOVE_RIGHT;
-            } else if (position == PersonagensPositions.MOVE_LEFT) {
-                position = PersonagensPositions.JUMP_MOVE_LEFT;
+            if (position == PersonagensPositions.STOP) {
+                position = PersonagensPositions.JUMP;
+            } else if (position == PersonagensPositions.MOVE) {
+                position = PersonagensPositions.JUMP_MOVE;
             }
 
             jumpVelocity = 30;
@@ -298,96 +311,68 @@ public class Personagem {
     }
 
     public void down() {
-        if (!isJumping()) {
+        if (!isJumping() && !isPunching() && !isHiting() && !isHadoukenAttacking()) {
             speed = 0;
-            if (isRight()) {
-                position = PersonagensPositions.DOWN_RIGHT;
-            } else if (isLeft()) {
-                position = PersonagensPositions.DOWN_LEFT;
-            }
+            position = PersonagensPositions.DOWNING;
         }
     }
 
     public void hadouken() {
-        if (energy >= 100 && !isDowning()) {
-            if (isRight()) {
-                game.getHadoukenController().newHadouken(HadoukenPositions.RIGHT, imgX + 150, imgY + upperHeightImg / 3);
-            } else if (isLeft()) {
-                game.getHadoukenController().newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 3);
-            }
-            energy = 0;
-
-            game.getSoundController().hadoukenSpeakSound();
-            game.getSoundController().hadoukenSound();
+        if (isRight()) {
+            game.getHadoukenController().newHadouken(HadoukenPositions.RIGHT, imgX + 150, imgY + upperHeightImg / 5);
+        } else if (isLeft()) {
+            game.getHadoukenController().newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 5);
         }
+        energy = 0;
+
+        game.getSoundController().hadoukenSpeakSound();
+        game.getSoundController().hadoukenSound();
     }
 
     public void punch() {
         if (!isJumping()) {
             speed = 0;
-            if (isRight()) {
-                position = PersonagensPositions.PUNCH_RIGHT;
-            } else if (isLeft()) {
-                position = PersonagensPositions.PUNCH_LEFT;
-            }
-
+            position = PersonagensPositions.PUNCH;
             game.getPersonagemController().testPunchHit(this);
         }
     }
 
-    public void stopHadoukenOrPunch() {
-        if (!isJumping()) {
-            if (isRight()) {
-                position = PersonagensPositions.STOP_RIGHT;
-            } else if (isLeft()) {
-                position = PersonagensPositions.STOP_LEFT;
-            }
-        }
+    public void setRight(boolean right) {
+        isRight = right;
     }
 
     public boolean isRight() {
-        return EnumSet.of(
-                PersonagensPositions.STOP_RIGHT,
-                PersonagensPositions.MOVE_RIGHT,
-                PersonagensPositions.JUMP_RIGHT,
-                PersonagensPositions.JUMP_MOVE_RIGHT,
-                PersonagensPositions.DOWN_RIGHT,
-                PersonagensPositions.PUNCH_RIGHT
-        ).contains(position);
+        return isRight;
     }
 
     public boolean isLeft() {
-        return EnumSet.of(
-                PersonagensPositions.STOP_LEFT,
-                PersonagensPositions.MOVE_LEFT,
-                PersonagensPositions.JUMP_LEFT,
-                PersonagensPositions.JUMP_MOVE_LEFT,
-                PersonagensPositions.DOWN_LEFT,
-                PersonagensPositions.PUNCH_LEFT
-        ).contains(position);
+        return !isRight;
     }
 
     public boolean isJumping() {
         return EnumSet.of(
-                PersonagensPositions.JUMP_LEFT,
-                PersonagensPositions.JUMP_RIGHT,
-                PersonagensPositions.JUMP_MOVE_LEFT,
-                PersonagensPositions.JUMP_MOVE_RIGHT
+                PersonagensPositions.JUMP,
+                PersonagensPositions.JUMP_MOVE
         ).contains(position);
     }
 
     public boolean isDowning() {
         return EnumSet.of(
-                PersonagensPositions.DOWN_RIGHT,
-                PersonagensPositions.DOWN_LEFT
+                PersonagensPositions.DOWNING,
+                PersonagensPositions.UPPERING
         ).contains(position);
     }
 
     public boolean isPunching() {
-        return EnumSet.of(
-                PersonagensPositions.PUNCH_RIGHT,
-                PersonagensPositions.PUNCH_LEFT
-        ).contains(position);
+        return position == PersonagensPositions.PUNCH;
+    }
+
+    public boolean isHiting() {
+        return position == PersonagensPositions.HITING;
+    }
+
+    public boolean isHadoukenAttacking() {
+        return position == PersonagensPositions.HADOUKEN_ATTACKING;
     }
 
     public boolean hit(float x, float y) {

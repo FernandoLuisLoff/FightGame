@@ -21,22 +21,30 @@ public class GameAssetManager {
 
     private TexturesPlayer player1Textures;
     private AnimationPlayer animationPlayer1;
-    private final String pathPlayer1Down = "players/player1/down.png";
-    private final String pathPlayer1JumpMove = "players/player1/jump_move.png";
-    private final String pathPlayer1Jump = "players/player1/jump.png";
+    private final String pathPlayer1Down = "players/player1/player_down.png";
+    private final String pathPlayer1Jump = "players/player1/player_jump.png";
     private final String pathPlayer1Move = "players/player1/player_move.png";
-    private final String pathPlayer1Punch = "players/player1/punch.png";
+    private final String pathPlayer1Punch = "players/player1/player_punch.png";
     private final String pathPlayer1Stop = "players/player1/player_stop.png";
+    private final String pathPlayer1Stunned = "players/player1/player_stunned.png";
+    private final String pathPlayer1Hiting = "players/player1/player_hiting.png";
+    private final String pathPlayer1HadoukenAttack = "players/player1/player_hadouken_attack.png";
+    private final String pathPlayer1KO = "players/player1/player_ko.png";
+    private final String pathPlayer1Winner = "players/player1/player_winner.png";
 
     private TexturesPlayer player2Textures;
 
     private AnimationPlayer animationPlayer2;
-    private final String pathPlayer2Down = "players/player2/down.png";
-    private final String pathPlayer2JumpMove = "players/player2/jump_move.png";
-    private final String pathPlayer2Jump = "players/player2/jump.png";
+    private final String pathPlayer2Down = "players/player2/player_down.png";
+    private final String pathPlayer2Jump = "players/player2/player_jump.png";
     private final String pathPlayer2Move = "players/player2/player_move.png";
-    private final String pathPlayer2Punch = "players/player2/punch.png";
+    private final String pathPlayer2Punch = "players/player2/player_punch.png";
     private final String pathPlayer2Stop = "players/player2/player_stop.png";
+    private final String pathPlayer2Stunned = "players/player2/player_stunned.png";
+    private final String pathPlayer2Hiting = "players/player2/player_hiting.png";
+    private final String pathPlayer2HadoukenAttack = "players/player2/player_hadouken_attack.png";
+    private final String pathPlayer2KO = "players/player2/player_ko.png";
+    private final String pathPlayer2Winner = "players/player2/player_winner.png";
 
     private final String pathLifeBar10 = "lifebar/life-bar_10.png";
     private final String pathLifeBar25 = "lifebar/life-bar_25.png";
@@ -79,38 +87,54 @@ public class GameAssetManager {
 
         // Player 1
         manager.load(pathPlayer1Down, Texture.class);
-        manager.load(pathPlayer1JumpMove, Texture.class);
         manager.load(pathPlayer1Jump, Texture.class);
         manager.load(pathPlayer1Move, Texture.class);
         manager.load(pathPlayer1Punch, Texture.class);
         manager.load(pathPlayer1Stop, Texture.class);
+        manager.load(pathPlayer1Stunned, Texture.class);
+        manager.load(pathPlayer1Hiting, Texture.class);
+        manager.load(pathPlayer1HadoukenAttack, Texture.class);
+        manager.load(pathPlayer1KO, Texture.class);
+        manager.load(pathPlayer1Winner, Texture.class);
 
         player1Textures = new TexturesPlayer(
                 manager,
                 pathPlayer1Down,
-                pathPlayer1JumpMove,
                 pathPlayer1Jump,
                 pathPlayer1Move,
                 pathPlayer1Punch,
-                pathPlayer1Stop
+                pathPlayer1Stop,
+                pathPlayer1Stunned,
+                pathPlayer1Hiting,
+                pathPlayer1HadoukenAttack,
+                pathPlayer1KO,
+                pathPlayer1Winner
         );
 
         // Player 2
         manager.load(pathPlayer2Down, Texture.class);
-        manager.load(pathPlayer2JumpMove, Texture.class);
         manager.load(pathPlayer2Jump, Texture.class);
         manager.load(pathPlayer2Move, Texture.class);
         manager.load(pathPlayer2Punch, Texture.class);
         manager.load(pathPlayer2Stop, Texture.class);
+        manager.load(pathPlayer2Stunned, Texture.class);
+        manager.load(pathPlayer2Hiting, Texture.class);
+        manager.load(pathPlayer2HadoukenAttack, Texture.class);
+        manager.load(pathPlayer2KO, Texture.class);
+        manager.load(pathPlayer2Winner, Texture.class);
 
         player2Textures = new TexturesPlayer(
                 manager,
                 pathPlayer2Down,
-                pathPlayer2JumpMove,
                 pathPlayer2Jump,
                 pathPlayer2Move,
                 pathPlayer2Punch,
-                pathPlayer2Stop
+                pathPlayer2Stop,
+                pathPlayer2Stunned,
+                pathPlayer2Hiting,
+                pathPlayer2HadoukenAttack,
+                pathPlayer2KO,
+                pathPlayer2Winner
         );
 
         // LifeBar

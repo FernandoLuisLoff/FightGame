@@ -37,10 +37,10 @@ public class PersonagemController {
         float imgY = heightImg/2 + 50;
 
         PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( this.game, "Player 1", this.game.getGameAssetManager().getAnimationPlayer1(), this.game.getGameAssetManager().getPlayer1Textures(), PersonagensPositions.STOP_RIGHT, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
+        personagens.add( new Personagem( this.game, "Player 1", this.game.getGameAssetManager().getAnimationPlayer1(), true, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
 
         PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( this.game, "Player 2", this.game.getGameAssetManager().getAnimationPlayer2(), this.game.getGameAssetManager().getPlayer2Textures(), PersonagensPositions.STOP_LEFT, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
+        personagens.add( new Personagem( this.game, "Player 2", this.game.getGameAssetManager().getAnimationPlayer2(), false, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
     }
 
     public void testPunchHit(Personagem personagem) {
@@ -54,7 +54,10 @@ public class PersonagemController {
                 }
 
                 if (outroPersonagem.hit(x, personagem.getImgY() + personagem.getUpperHeightImg()/4)) {
+                    outroPersonagem.setStateTime(0);
                     outroPersonagem.setLife(outroPersonagem.getLife() - 10);
+                    outroPersonagem.setPosition(PersonagensPositions.HITING);
+                    outroPersonagem.setSpeed(0);
                     game.getSoundController().punchHitSound();
                 } else {
                     game.getSoundController().punchSound();
@@ -69,7 +72,10 @@ public class PersonagemController {
             Hadouken hadouken = iterator.next();
 
             if (personagem.hit(hadouken.getImgX(), hadouken.getImgY())) {
+                personagem.setStateTime(0);
                 personagem.setLife(personagem.getLife() - 50);
+                personagem.setPosition(PersonagensPositions.HITING);
+                personagem.setSpeed(0);
                 game.getSoundController().hadoukenHitSound();
                 iterator.remove();
             }
@@ -96,14 +102,10 @@ public class PersonagemController {
 
                 if (personagem.getImgY() <= personagem.getGround()) { // Se atingir o chão
                     personagem.setImgY(personagem.getGround());
-                    if (personagem.getPosition() == PersonagensPositions.JUMP_RIGHT) {
-                        personagem.setPosition(PersonagensPositions.STOP_RIGHT);
-                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_LEFT) {
-                        personagem.setPosition(PersonagensPositions.STOP_LEFT);
-                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_RIGHT) {
-                        personagem.setPosition(PersonagensPositions.MOVE_RIGHT);
-                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE_LEFT) {
-                        personagem.setPosition(PersonagensPositions.MOVE_LEFT);
+                    if (personagem.getPosition() == PersonagensPositions.JUMP) {
+                        personagem.setPosition(PersonagensPositions.STOP);
+                    } else if (personagem.getPosition() == PersonagensPositions.JUMP_MOVE) {
+                        personagem.setPosition(PersonagensPositions.MOVE);
                     }
                     personagem.setJumpVelocity(0);
                 }
@@ -126,13 +128,24 @@ public class PersonagemController {
         }
 
         if (personagemDeath != null) {
-            endGame(personagemDeath);
+            for (Personagem personagemWinner : personagens) {
+                if (personagemWinner != personagemDeath) {
+                    endGame(personagemWinner, personagemDeath);
+                    break;
+                }
+            }
         }
     }
 
-    public void endGame(Personagem personagem) {
+    public void endGame(Personagem personagemWinner, Personagem personagemLoser) {
         if (game.getGameState() == GameState.RUNNING) {
-            game.getSoundController().endGameSound(personagem.getName());
+            personagemLoser.setStateTime(0);
+            personagemLoser.setPosition(PersonagensPositions.KO);
+
+            personagemWinner.setStateTime(0);
+            personagemWinner.setPosition(PersonagensPositions.WINNER);
+
+            game.getSoundController().endGameSound(personagemLoser.getName());
             game.setGameState( GameState.END_GAME );
         }
     }

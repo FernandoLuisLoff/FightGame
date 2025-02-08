@@ -6,6 +6,7 @@ import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.GameState;
+import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.MyGdxGame;
 
 public class InputProcessor implements com.badlogic.gdx.InputProcessor {
@@ -19,18 +20,39 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
     public boolean keyDown(int i) {
         if (game.getGameState() == GameState.RUNNING) {
             for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
+                boolean resetTime = false;
+                boolean canResetTime = !personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking();
+
                 if (i == personagem.getInputKeys().keyJump) {
                     personagem.jump();
+                    resetTime = true;
                 } else if (i == personagem.getInputKeys().keyRight) {
                     personagem.moveRight();
+                    resetTime = true;
                 } else if (i == personagem.getInputKeys().keyLeft) {
                     personagem.moveLeft();
+                    resetTime = true;
                 } else if (i == personagem.getInputKeys().keyHadouken) {
-                    personagem.hadouken();
+                    if (!personagem.isJumping() && !personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+                        if (personagem.getEnergy() >= 100) {
+                            personagem.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
+                            resetTime = true;
+                        }
+                    }
                 } else if (i == personagem.getInputKeys().keyDown) {
-                    personagem.down();
+                    if (!personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+                        personagem.down();
+                        resetTime = true;
+                    }
                 } else if (i == personagem.getInputKeys().keyPunch) {
-                    personagem.punch();
+                    if (!personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+                        personagem.punch();
+                        resetTime = true;
+                    }
+                }
+
+                if (resetTime && canResetTime) {
+                    personagem.setStateTime(0);
                 }
             }
         }
@@ -41,12 +63,19 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
     public boolean keyUp(int i) {
         if (game.getGameState() == GameState.RUNNING) {
             for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
-                if (i == personagem.getInputKeys().keyRight) {
-                    personagem.stopMoveRight();
-                } else if (i == personagem.getInputKeys().keyLeft) {
-                    personagem.stopMoveLeft();
-                } else if (i == personagem.getInputKeys().keyDown || i == personagem.getInputKeys().keyPunch) {
-                    personagem.stopHadoukenOrPunch();
+                boolean resetTime = false;
+                boolean canResetTime = !personagem.isDowning() && !personagem.isPunching() && !personagem.isHadoukenAttacking();
+
+                if (i == personagem.getInputKeys().keyRight || i == personagem.getInputKeys().keyLeft) {
+                    personagem.stopMove();
+                    resetTime = true;
+                } else if (i == personagem.getInputKeys().keyDown && personagem.isDowning()) {
+                    personagem.setPosition(PersonagensPositions.UPPERING);
+                    resetTime = true;
+                }
+
+                if (resetTime && canResetTime) {
+                    personagem.setStateTime(0);
                 }
             }
         }
