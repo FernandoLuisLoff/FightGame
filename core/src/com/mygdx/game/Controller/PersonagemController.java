@@ -54,10 +54,12 @@ public class PersonagemController {
                 }
 
                 if (outroPersonagem.hit(x, personagem.getImgY() + personagem.getUpperHeightImg()/4)) {
-                    outroPersonagem.setStateTime(0);
                     outroPersonagem.setLife(outroPersonagem.getLife() - 10);
-                    outroPersonagem.setPosition(PersonagensPositions.HITING);
-                    outroPersonagem.setSpeed(0);
+                    if (!outroPersonagem.isJumping()) {
+                        outroPersonagem.setStateTime(0);
+                        outroPersonagem.setPosition(PersonagensPositions.HITING);
+                        outroPersonagem.setSpeed(0);
+                    }
                     game.getSoundController().punchHitSound();
                 } else {
                     game.getSoundController().punchSound();
@@ -72,10 +74,12 @@ public class PersonagemController {
             Hadouken hadouken = iterator.next();
 
             if (personagem.hit(hadouken.getImgX(), hadouken.getImgY())) {
-                personagem.setStateTime(0);
                 personagem.setLife(personagem.getLife() - 50);
-                personagem.setPosition(PersonagensPositions.HITING);
-                personagem.setSpeed(0);
+                if (!personagem.isJumping()) {
+                    personagem.setStateTime(0);
+                    personagem.setPosition(PersonagensPositions.HITING);
+                    personagem.setSpeed(0);
+                }
                 game.getSoundController().hadoukenHitSound();
                 iterator.remove();
             }

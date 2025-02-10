@@ -8,6 +8,7 @@ import com.mygdx.game.Controller.SoundController;
 import com.mygdx.game.Controller.StatusBarController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
+import com.mygdx.game.Entity.Timer;
 import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.InputProcessor;
@@ -18,6 +19,7 @@ public class MyGdxGame extends Game {
 	private SpriteBatch batch;
 
 	private ExitButton exitButton;
+	private Timer timer;
 
 	private final SoundController soundController = new SoundController();
 	private final PersonagemController personagemController = new PersonagemController();
@@ -68,6 +70,7 @@ public class MyGdxGame extends Game {
 
 		batch = new SpriteBatch();
 		exitButton = new ExitButton(this);
+		timer = new Timer(this);
 
 		hadoukenController.init(this);
 		personagemController.init(this);
@@ -88,6 +91,7 @@ public class MyGdxGame extends Game {
 		personagemController.render();
 		hadoukenController.render();
 		statusBarController.render();
+		timer.render();
 		soundController.render();
 
 		batch.end();
@@ -98,6 +102,7 @@ public class MyGdxGame extends Game {
 		batch.dispose();
 		gameAssetManager.dispose();
 		statusBarController.dispose();
+		timer.dispose();
 		soundController.dispose();
 	}
 }
