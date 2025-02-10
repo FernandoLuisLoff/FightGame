@@ -1,3 +1,7 @@
+# Restart Game:
+
+ENTER
+
 # Player 1:
 
 Controles do jogo:

@@ -21,12 +21,12 @@ public class MyGdxGame extends Game {
 	private ExitButton exitButton;
 	private Timer timer;
 
-	private final SoundController soundController = new SoundController();
-	private final PersonagemController personagemController = new PersonagemController();
-	private final HadoukenController hadoukenController = new HadoukenController();
-	private final StatusBarController statusBarController = new StatusBarController();
+	private SoundController soundController;
+	private PersonagemController personagemController;
+	private HadoukenController hadoukenController;
+	private StatusBarController statusBarController;
 
-	private GameState gameState = GameState.PAUSED;
+	private GameState gameState;
 
 	public GameAssetManager getGameAssetManager() {
 		return gameAssetManager;
@@ -71,6 +71,12 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		exitButton = new ExitButton(this);
 		timer = new Timer(this);
+		gameState = GameState.PAUSED;
+
+		soundController = new SoundController();
+		hadoukenController = new HadoukenController();
+		personagemController = new PersonagemController();
+		statusBarController = new StatusBarController();
 
 		hadoukenController.init(this);
 		personagemController.init(this);

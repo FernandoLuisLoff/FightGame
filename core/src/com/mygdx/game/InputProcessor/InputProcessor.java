@@ -1,6 +1,7 @@
 package com.mygdx.game.InputProcessor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.mygdx.game.Controller.HadoukenController;
 import com.mygdx.game.Controller.PersonagemController;
 import com.mygdx.game.Entity.ExitButton;
@@ -54,6 +55,10 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
                 if (resetTime && canResetTime) {
                     personagem.setStateTime(0);
                 }
+            }
+        } else if (game.getGameState() == GameState.END_GAME) {
+            if (i == Input.Keys.ENTER) {
+                game.create();
             }
         }
         return true;
