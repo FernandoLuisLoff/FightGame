@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 500.0
-highMax: 1000.0
+highMin: 300.0
+highMax: 700.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -77,8 +77,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 30.0
-highMax: 300.0
+highMin: -50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -88,8 +88,8 @@ timeline0: 0.0
 active: true
 lowMin: 90.0
 lowMax: 90.0
-highMin: 45.0
-highMax: 135.0
+highMin: 80.0
+highMax: 100.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -138,4 +138,3 @@ premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
 particle.png
-

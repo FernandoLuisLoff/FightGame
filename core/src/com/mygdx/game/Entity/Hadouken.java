@@ -88,7 +88,7 @@ public class Hadouken {
 
         particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.internal("particles/hadouken_particles.p"), Gdx.files.internal("particles/"));
-        particleEffect.setPosition(this.imgX - this.widthImg / 2, this.imgY - this.heightImg / 2);
+        particleEffect.setPosition(this.imgX, this.imgY);
         particleEffect.start();
 
 
@@ -123,11 +123,11 @@ public class Hadouken {
                 break;
         }
 
-        sprite.draw(game.getBatch());
-
-        particleEffect.setPosition(imgX - widthImg / 2, imgY - heightImg / 2);
+        particleEffect.setPosition(imgX, imgY);
         particleEffect.update(Gdx.graphics.getDeltaTime());
         particleEffect.draw(game.getBatch());
+
+        sprite.draw(game.getBatch());
     }
 
     public void dispose() {
