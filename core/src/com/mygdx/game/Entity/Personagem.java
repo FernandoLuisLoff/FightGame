@@ -324,6 +324,7 @@ public class Personagem {
             game.getHadoukenController().newHadouken(HadoukenPositions.LEFT, imgX - 150, imgY + upperHeightImg / 5);
         }
         energy = 0;
+        speed = 0;
 
         game.getSoundController().hadoukenSpeakSound();
         game.getSoundController().hadoukenSound();
