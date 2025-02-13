@@ -110,5 +110,6 @@ public class MyGdxGame extends Game {
 		statusBarController.dispose();
 		timer.dispose();
 		soundController.dispose();
+		hadoukenController.dispose();
 	}
 }

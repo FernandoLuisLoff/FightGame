@@ -81,6 +81,7 @@ public class PersonagemController {
                     personagem.setSpeed(0);
                 }
                 game.getSoundController().hadoukenHitSound();
+                hadouken.dispose();
                 iterator.remove();
             }
         }

@@ -55,9 +55,16 @@ public class HadoukenController {
                 update(hadouken);
                 hadouken.render();
             } else {
+                hadouken.dispose();
                 iterator.remove();
                 game.getSoundController().hadoukenOutScreenSound();
             }
         }
+    }
+
+    public void dispose() {
+        hadoukens.forEach(hadouken -> {
+            hadouken.dispose();
+        });
     }
 }

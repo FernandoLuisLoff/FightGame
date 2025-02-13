@@ -1,7 +1,10 @@
 package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Enum.HadoukenPositions;
@@ -21,6 +24,7 @@ public class Hadouken {
     private float imgY;
 
     private HadoukenPositions position;
+    private ParticleEffect particleEffect;
 
     private float speed;
 
@@ -82,6 +86,12 @@ public class Hadouken {
         this.imgY = imgY;
         this.speed = speed;
 
+        particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("particles/hadouken_particles.p"), Gdx.files.internal("particles/"));
+        particleEffect.setPosition(this.imgX - this.widthImg / 2, this.imgY - this.heightImg / 2);
+        particleEffect.start();
+
+
         stateTime = 0f;
         animation = game.getGameAssetManager().getAnimationHadouken().getAnimation();
         sprite = new Sprite(animation.getKeyFrame(stateTime));
@@ -99,6 +109,7 @@ public class Hadouken {
         sprite.setSize(widthImg, heightImg);
         sprite.setPosition(imgX - widthImg / 2, imgY - heightImg / 2);
 
+
         switch (position) {
             case RIGHT:
                 if (sprite.isFlipX()) {
@@ -112,7 +123,14 @@ public class Hadouken {
                 break;
         }
 
-        // Renderizar o sprite
         sprite.draw(game.getBatch());
+
+        particleEffect.setPosition(imgX - widthImg / 2, imgY - heightImg / 2);
+        particleEffect.update(Gdx.graphics.getDeltaTime());
+        particleEffect.draw(game.getBatch());
+    }
+
+    public void dispose() {
+        particleEffect.dispose();
     }
 }
