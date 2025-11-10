@@ -16,7 +16,7 @@ D - Andar para direita
 
 V - Hadouken
 
-C - Soco
+C - Golpe
 
 # Player 2:
 
@@ -32,4 +32,4 @@ RIGHT - Andar para direita
 
 M - Hadouken
 
-N - Soco
+N - Golpe
