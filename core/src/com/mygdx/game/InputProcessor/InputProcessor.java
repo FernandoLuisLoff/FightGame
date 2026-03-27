@@ -2,9 +2,6 @@ package com.mygdx.game.InputProcessor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.Controller.HadoukenController;
-import com.mygdx.game.Controller.PersonagemController;
-import com.mygdx.game.Entity.ExitButton;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.PersonagensPositions;

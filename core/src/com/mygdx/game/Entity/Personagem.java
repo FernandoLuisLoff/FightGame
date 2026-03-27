@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.AnimationPlayer;
-import com.mygdx.game.GameAssetManager.TexturesPlayer;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
 

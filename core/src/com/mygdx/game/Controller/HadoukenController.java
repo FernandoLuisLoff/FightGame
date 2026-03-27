@@ -1,16 +1,8 @@
 package com.mygdx.game.Controller;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Entity.Hadouken;
-import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.HadoukenPositions;
-import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.MyGdxGame;
 
 import java.util.ArrayList;

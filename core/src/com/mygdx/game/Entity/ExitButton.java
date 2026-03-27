@@ -1,9 +1,6 @@
 package com.mygdx.game.Entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.MyGdxGame;
 
 public class ExitButton {

@@ -2,14 +2,10 @@ package com.mygdx.game.Controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.PersonagensPositions;
-import com.mygdx.game.GameAssetManager.GameAssetManager;
 import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
 

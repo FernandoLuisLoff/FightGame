@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
 public class TexturesPlayer {
-    private static AssetManager manager;
+    private AssetManager manager;
     private String pathPlayerDown;
     private String pathPlayerJump;
     private String pathPlayerMove;
