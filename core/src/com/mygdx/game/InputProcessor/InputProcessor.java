@@ -9,6 +9,9 @@ import com.mygdx.game.MyGdxGame;
 
 public class InputProcessor implements com.badlogic.gdx.InputProcessor {
     private MyGdxGame game;
+    
+    private int resetKey = Input.Keys.ENTER;
+    private int pauseKey = Input.Keys.P;
 
     private int keyJump = Input.Keys.W;
     private int keyDown = Input.Keys.S;
@@ -25,13 +28,20 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        if (game.getGameState() == GameState.RUNNING) {
+        if (game.getGameState() == GameState.PAUSED) {
+            if (i == pauseKey) {
+                game.setGameState(GameState.RUNNING);
+            }
+        } else if (game.getGameState() == GameState.RUNNING) {
             boolean resetTime = false;
             boolean notTakingAction = !personagem.isDowning() 
                 && !personagem.isPunching()
                 && !personagem.isHiting()
                 && !personagem.isHadoukenAttacking();
-            
+                
+            if (i == pauseKey) {
+                game.setGameState(GameState.PAUSED);
+            }
             if (i == keyJump) {
                 personagem.jump();
                 resetTime = true;
@@ -65,7 +75,7 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
                 personagem.setStateTime(0);
             }
         } else if (game.getGameState() == GameState.END_GAME) {
-            if (i == Input.Keys.ENTER) {
+            if (i == resetKey) {
                 game.create();
             }
         }

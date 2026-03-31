@@ -71,7 +71,7 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		exitButton = new ExitButton(this);
 		timer = new Timer(this);
-		gameState = GameState.PAUSED;
+		gameState = GameState.INIT_GAME;
 
 		soundController = new SoundController();
 		hadoukenController = new HadoukenController();

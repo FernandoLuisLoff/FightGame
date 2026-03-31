@@ -1,17 +1,17 @@
-# Restart Game:
+## Restart Game: ENTER
 
-ENTER
+## Pause Game: P
 
-# Controles do jogo:
+## Controles do jogo:
 
-W - Pular
+    W - Pular
 
-S - Abaixar
+    S - Abaixar
 
-A - Andar para esquerda
+    A - Andar para esquerda
 
-D - Andar para direita
+    D - Andar para direita
 
-H - Hadouken
+    H - Hadouken
 
-J - Golpe
+    J - Golpe

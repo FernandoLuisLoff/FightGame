@@ -30,12 +30,10 @@ public class HadoukenController {
     }
 
     public void update(Hadouken hadouken) {
-        if (game.getGameState() == GameState.RUNNING) {
-            if (hadouken.getPosition() == HadoukenPositions.RIGHT) {
-                hadouken.setImgX(hadouken.getImgX() + hadouken.getSpeed());
-            } else if (hadouken.getPosition() == HadoukenPositions.LEFT) {
-                hadouken.setImgX(hadouken.getImgX() - hadouken.getSpeed());
-            }
+        if (hadouken.getPosition() == HadoukenPositions.RIGHT) {
+            hadouken.setImgX(hadouken.getImgX() + hadouken.getSpeed());
+        } else if (hadouken.getPosition() == HadoukenPositions.LEFT) {
+            hadouken.setImgX(hadouken.getImgX() - hadouken.getSpeed());
         }
     }
 

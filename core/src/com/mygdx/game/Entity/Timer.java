@@ -26,13 +26,17 @@ public class Timer {
     }
 
     public void render() {
-        if( game.getGameState() == GameState.RUNNING) {
-            update();
-        }
+        String timeString = "";
 
-        int minutes = (int) (stateTime / 60);
-        int seconds = (int) (stateTime % 60);
-        String timeString = String.format("%02d:%02d", minutes, seconds);
+        if (game.getGameState() == GameState.PAUSED) {
+            timeString = "PAUSADO";
+        }
+        if (game.getGameState() == GameState.RUNNING) {
+            update();
+            int minutes = (int) (stateTime / 60);
+            int seconds = (int) (stateTime % 60);
+            timeString = String.format("%02d:%02d", minutes, seconds);
+        }
 
         layout.setText(font, timeString);
 

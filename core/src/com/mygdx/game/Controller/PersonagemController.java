@@ -136,6 +136,13 @@ public class PersonagemController {
             }
 
             testHadoukenHit(personagem);
+        } else if (game.getGameState() == GameState.END_GAME) {
+            if (personagem.getImgY() > personagem.getGround()) {
+                personagem.setImgY(personagem.getImgY() + personagem.getJumpVelocity());
+                personagem.setJumpVelocity(personagem.getJumpVelocity() + personagem.getGravity());
+            } else {
+                personagem.setJumpVelocity(0);
+            }
         }
     }
 
