@@ -35,26 +35,29 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
             if (i == keyJump) {
                 personagem.jump();
                 resetTime = true;
-            } else if (i == keyRight) {
+            }
+            if (i == keyRight) {
                 personagem.moveRight();
                 resetTime = true;
-            } else if (i == keyLeft) {
+            }
+            if (i == keyLeft) {
                 personagem.moveLeft();
                 resetTime = true;
-            } else {
-                if (notTakingAction) {
-                    if (i == keyHadouken) {
-                        if (personagem.getEnergy() >= 100) {
-                            personagem.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
-                            resetTime = true;
-                        }
-                    } else if (i == keyDown) {
-                        personagem.down();
-                        resetTime = true;
-                    } else if (i == keyPunch) {
-                        personagem.punch();
+            }
+            if (notTakingAction) {
+                if (i == keyHadouken) {
+                    if (personagem.getEnergy() >= 100) {
+                        personagem.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
                         resetTime = true;
                     }
+                }
+                if (i == keyDown) {
+                    personagem.down();
+                    resetTime = true;
+                }
+                if (i == keyPunch) {
+                    personagem.punch();
+                    resetTime = true;
                 }
             }
 
@@ -82,11 +85,11 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
                 if (i == keyRight || i == keyLeft) {
                     personagem.stopMove();
                     resetTime = true;
-                } else if (i == keyDown && personagem.isDowning()) {
+                } 
+                if (i == keyDown && personagem.isDowning()) {
                     personagem.setPosition(PersonagensPositions.UPPERING);
                     resetTime = true;
                 }
-
                 if (resetTime && notTakingAction) {
                     personagem.setStateTime(0);
                 }

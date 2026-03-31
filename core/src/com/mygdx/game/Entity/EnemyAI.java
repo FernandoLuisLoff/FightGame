@@ -14,6 +14,13 @@ public class EnemyAI {
     private float reactionTime = 0.25f;
     private float hadoukenCooldown = 0;
 
+    // 🧠 PERSONALIDADE
+    private float aggressiveness = 0.7f; // 0 = defensivo | 1 = agressivo
+
+    // 🧠 MEMÓRIA
+    private float lastActionTime = 0;
+    private float actionCooldown = 0.2f;
+
     public EnemyAI(MyGdxGame game, Personagem enemy, Personagem player) {
         this.game = game;
         this.enemy = enemy;
@@ -21,14 +28,17 @@ public class EnemyAI {
     }
 
     public void update(float delta) {
-        if (game.getGameState() != GameState.RUNNING) {
-            return;
-        } 
+        if (game.getGameState() != GameState.RUNNING) return;
 
         timer += delta;
         hadoukenCooldown -= delta;
+        lastActionTime -= delta;
 
         if (timer < reactionTime) return;
+
+        // 🎲 Tempo de reação variável (mais humano)
+        reactionTime = 0.15f + (float)Math.random() * 0.2f;
+
         timer = 0;
 
         think();
@@ -38,53 +48,96 @@ public class EnemyAI {
         float distance = player.getImgX() - enemy.getImgX();
         float absDistance = Math.abs(distance);
 
-        boolean canAct =
-                !enemy.isDowning() &&
-                !enemy.isPunching() &&
-                !enemy.isHiting() &&
-                !enemy.isHadoukenAttacking();
-
-        if (!canAct) return;
-
-        if (enemy.getPosition() == PersonagensPositions.DOWNING && absDistance > 0.7) {
-            enemy.setPosition(PersonagensPositions.UPPERING);
+        // 🔄 Levantar se estiver abaixado
+        if (enemy.getPosition() == PersonagensPositions.DOWNING) {
+            if (Math.random() < (1 - aggressiveness)) {
+                enemy.setPosition(PersonagensPositions.UPPERING);
+                reset();
+                return;
+            }
         }
+
+        boolean canAct = !enemy.isDowning()
+                && !enemy.isPunching()
+                && !enemy.isHiting()
+                && !enemy.isHadoukenAttacking();
+
+        if (!canAct || lastActionTime > 0) return;
 
         // 🔄 Virar pro lado certo
-        if (distance > 0) {
-            enemy.setRight(true);
-        } else {
-            enemy.setRight(false);
+        enemy.setRight(distance > 0);
+
+        // =========================
+        // 🧠 DEFESA / REAÇÃO
+        // =========================
+        if (player.isPunching() || player.isHadoukenAttacking()) {
+            if (Math.random() < (1 - aggressiveness)) {
+                enemy.down(); // esquiva
+                reset();
+                return;
+            }
         }
 
-        // 🛫 Anti-air
+        // =========================
+        // 🎯 PUNISH (punir erro)
+        // =========================
+        if (player.isPunching() && !player.isHiting()) {
+            if (Math.random() < 0.6) {
+                enemy.punch();
+                reset();
+                return;
+            }
+        }
+
+        // =========================
+        // 🛫 ANTI-AIR
+        // =========================
         if (player.isJumping()) {
-            if (Math.random() < 0.7) {
+            if (Math.random() < 0.75f) {
                 enemy.punch();
                 reset();
             }
             return;
         }
 
-        // 🔥 Long range
+        // =========================
+        // 🔥 LONG RANGE
+        // =========================
         if (absDistance > 200) {
             if (enemy.getEnergy() >= 100 && hadoukenCooldown <= 0) {
-                enemy.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
-                hadoukenCooldown = 2f;
-                reset();
-            } else {
+                if (Math.random() < aggressiveness) {
+                    enemy.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
+                    hadoukenCooldown = 2f;
+                    reset();
+                    return;
+                }
+            }
+
+            // Às vezes não vai direto (fake movement)
+            if (Math.random() < 0.8f) {
                 approach(distance);
             }
             return;
         }
 
-        // 🚶 Mid range
+        // =========================
+        // 🚶 MID RANGE
+        // =========================
         if (absDistance > 80) {
-            approach(distance);
+            if (Math.random() < aggressiveness) {
+                approach(distance);
+            } else {
+                // movimento fake (anda e para)
+                if (Math.random() < 0.5) {
+                    approach(distance);
+                }
+            }
             return;
         }
 
-        // 🥊 Close combat
+        // =========================
+        // 🥊 CLOSE COMBAT
+        // =========================
         closeCombat();
     }
 
@@ -100,12 +153,14 @@ public class EnemyAI {
     private void closeCombat() {
         double r = Math.random();
 
-        if (r < 0.5) {
+        if (r < 0.5 * aggressiveness) {
             enemy.punch();
         } else if (r < 0.7) {
             enemy.down();
-        } else {
+        } else if (r < 0.9) {
             enemy.jump();
+        } else {
+            // 🎲 erro proposital (fica parado)
         }
 
         reset();
@@ -113,5 +168,6 @@ public class EnemyAI {
 
     private void reset() {
         enemy.setStateTime(0);
+        lastActionTime = actionCooldown;
     }
 }

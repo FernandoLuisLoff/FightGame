@@ -58,6 +58,7 @@ public class PersonagemController {
         );
         personagens.add( enemy );
     
+        // aiMap.put(player, new EnemyAI(this.game, player, enemy));
         aiMap.put(enemy, new EnemyAI(this.game, enemy, player));
     }
 
