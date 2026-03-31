@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.Enum.PersonagensPositions;
 import com.mygdx.game.GameAssetManager.AnimationPlayer;
-import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
 
 import java.util.EnumSet;
@@ -19,7 +18,6 @@ public class Personagem {
 
     private Sprite sprite;
     private AnimationPlayer animationPlayer;
-    private PersonagemInputKeys inputKeys;
 
     private float widthImg;
     private float upperHeightImg;
@@ -62,14 +60,6 @@ public class Personagem {
 
     public void setDownHeightImg(float downHeightImg) {
         this.downHeightImg = downHeightImg;
-    }
-
-    public PersonagemInputKeys getInputKeys() {
-        return inputKeys;
-    }
-
-    public void setInputKeys(PersonagemInputKeys inputKeys) {
-        this.inputKeys = inputKeys;
     }
 
     public float getWidthImg() {
@@ -160,13 +150,12 @@ public class Personagem {
         this.ground = ground;
     }
 
-    public Personagem(MyGdxGame game, String name, AnimationPlayer animationPlayer, boolean isRight, PersonagemInputKeys inputKeys, float widthImg, float heightImg, float imgX, float imgY) {
+    public Personagem(MyGdxGame game, String name, AnimationPlayer animationPlayer, boolean isRight, float widthImg, float heightImg, float imgX, float imgY) {
         this.game = game;
         this.name = name;
         this.animationPlayer = animationPlayer;
         this.isRight = isRight;
         this.position = PersonagensPositions.STOP;
-        this.inputKeys = inputKeys;
         this.widthImg = widthImg;
         this.upperHeightImg = heightImg;
         this.downHeightImg = heightImg/2;

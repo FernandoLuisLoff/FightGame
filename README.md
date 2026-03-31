@@ -2,9 +2,7 @@
 
 ENTER
 
-# Player 1:
-
-Controles do jogo:
+# Controles do jogo:
 
 W - Pular
 
@@ -14,22 +12,6 @@ A - Andar para esquerda
 
 D - Andar para direita
 
-V - Hadouken
+H - Hadouken
 
-C - Golpe
-
-# Player 2:
-
-Controles do jogo:
-
-UP - Pular
-
-DOWN - Abaixar
-
-LEFT - Andar para esquerda
-
-RIGHT - Andar para direita
-
-M - Hadouken
-
-N - Golpe
+J - Golpe

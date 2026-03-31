@@ -10,48 +10,56 @@ import com.mygdx.game.MyGdxGame;
 public class InputProcessor implements com.badlogic.gdx.InputProcessor {
     private MyGdxGame game;
 
+    private int keyJump = Input.Keys.W;
+    private int keyDown = Input.Keys.S;
+    private int keyRight = Input.Keys.D;
+    private int keyLeft = Input.Keys.A;
+    private int keyHadouken = Input.Keys.H;
+    private int keyPunch = Input.Keys.J;
+    private Personagem personagem;
+
     public InputProcessor(MyGdxGame game) {
         this.game = game;
+        this.personagem = this.game.getPersonagemController().getPersonagens().get(0);
     }
 
     @Override
     public boolean keyDown(int i) {
         if (game.getGameState() == GameState.RUNNING) {
-            for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
-                boolean resetTime = false;
-                boolean canResetTime = !personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking();
-
-                if (i == personagem.getInputKeys().keyJump) {
-                    personagem.jump();
-                    resetTime = true;
-                } else if (i == personagem.getInputKeys().keyRight) {
-                    personagem.moveRight();
-                    resetTime = true;
-                } else if (i == personagem.getInputKeys().keyLeft) {
-                    personagem.moveLeft();
-                    resetTime = true;
-                } else if (i == personagem.getInputKeys().keyHadouken) {
-                    if (!personagem.isJumping() && !personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+            boolean resetTime = false;
+            boolean notTakingAction = !personagem.isDowning() 
+                && !personagem.isPunching()
+                && !personagem.isHiting()
+                && !personagem.isHadoukenAttacking();
+            
+            if (i == keyJump) {
+                personagem.jump();
+                resetTime = true;
+            } else if (i == keyRight) {
+                personagem.moveRight();
+                resetTime = true;
+            } else if (i == keyLeft) {
+                personagem.moveLeft();
+                resetTime = true;
+            } else {
+                if (notTakingAction) {
+                    if (i == keyHadouken) {
                         if (personagem.getEnergy() >= 100) {
                             personagem.setPosition(PersonagensPositions.HADOUKEN_ATTACKING);
                             resetTime = true;
                         }
-                    }
-                } else if (i == personagem.getInputKeys().keyDown) {
-                    if (!personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+                    } else if (i == keyDown) {
                         personagem.down();
                         resetTime = true;
-                    }
-                } else if (i == personagem.getInputKeys().keyPunch) {
-                    if (!personagem.isDowning() && !personagem.isPunching() && !personagem.isHiting() && !personagem.isHadoukenAttacking()) {
+                    } else if (i == keyPunch) {
                         personagem.punch();
                         resetTime = true;
                     }
                 }
+            }
 
-                if (resetTime && canResetTime) {
-                    personagem.setStateTime(0);
-                }
+            if (resetTime && notTakingAction) {
+                personagem.setStateTime(0);
             }
         } else if (game.getGameState() == GameState.END_GAME) {
             if (i == Input.Keys.ENTER) {
@@ -66,17 +74,20 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor {
         if (game.getGameState() == GameState.RUNNING) {
             for (Personagem personagem : game.getPersonagemController().getPersonagens()) {
                 boolean resetTime = false;
-                boolean canResetTime = !personagem.isDowning() && !personagem.isPunching() && !personagem.isHadoukenAttacking();
+                boolean notTakingAction = !personagem.isDowning() 
+                    && !personagem.isPunching()
+                    && !personagem.isHiting()
+                    && !personagem.isHadoukenAttacking();
 
-                if (i == personagem.getInputKeys().keyRight || i == personagem.getInputKeys().keyLeft) {
+                if (i == keyRight || i == keyLeft) {
                     personagem.stopMove();
                     resetTime = true;
-                } else if (i == personagem.getInputKeys().keyDown && personagem.isDowning()) {
+                } else if (i == keyDown && personagem.isDowning()) {
                     personagem.setPosition(PersonagensPositions.UPPERING);
                     resetTime = true;
                 }
 
-                if (resetTime && canResetTime) {
+                if (resetTime && notTakingAction) {
                     personagem.setStateTime(0);
                 }
             }

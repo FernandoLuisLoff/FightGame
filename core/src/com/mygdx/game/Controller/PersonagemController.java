@@ -1,21 +1,23 @@
 package com.mygdx.game.Controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.mygdx.game.Entity.EnemyAI;
 import com.mygdx.game.Entity.Hadouken;
 import com.mygdx.game.Entity.Personagem;
 import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.PersonagensPositions;
-import com.mygdx.game.InputProcessor.PersonagemInputKeys;
 import com.mygdx.game.MyGdxGame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class PersonagemController {
     private MyGdxGame game;
 
     private ArrayList<Personagem> personagens;
+    
+    private HashMap<Personagem, EnemyAI> aiMap = new HashMap<>();
 
     public ArrayList<Personagem> getPersonagens() {
         return personagens;
@@ -32,11 +34,31 @@ public class PersonagemController {
         float heightImg = 420;
         float imgY = heightImg/2 + 50;
 
-        PersonagemInputKeys player1InputKey = new PersonagemInputKeys(Input.Keys.D, Input.Keys.A, Input.Keys.W, Input.Keys.S, Input.Keys.C, Input.Keys.V);
-        personagens.add( new Personagem( this.game, "Player 1", this.game.getGameAssetManager().getAnimationPlayer1(), true, player1InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() / 4, imgY ));
+        Personagem player =  new Personagem(
+            this.game,
+            "Você",
+            this.game.getGameAssetManager().getAnimationPlayer1(),
+            true,
+            widhtImg,
+            heightImg,
+            Gdx.graphics.getWidth() / 4,
+            imgY
+        );
+        personagens.add( player );
 
-        PersonagemInputKeys player2InputKey = new PersonagemInputKeys(Input.Keys.RIGHT, Input.Keys.LEFT, Input.Keys.UP, Input.Keys.DOWN, Input.Keys.N, Input.Keys.M);
-        personagens.add( new Personagem( this.game, "Player 2", this.game.getGameAssetManager().getAnimationPlayer2(), false, player2InputKey, widhtImg, heightImg, Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4, imgY ));
+        Personagem enemy = new Personagem(
+            this.game, 
+            "Bruce Lee",
+            this.game.getGameAssetManager().getAnimationPlayer2(),
+            false, 
+            widhtImg,
+            heightImg,
+            Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4,
+            imgY
+        );
+        personagens.add( enemy );
+    
+        aiMap.put(enemy, new EnemyAI(this.game, enemy, player));
     }
 
     public void testPunchHit(Personagem personagem) {
@@ -119,6 +141,10 @@ public class PersonagemController {
     public void render() {
         Personagem personagemDeath = null;
         for (Personagem personagem : personagens) {
+            if (aiMap.containsKey(personagem)) {
+                aiMap.get(personagem).update(Gdx.graphics.getDeltaTime());
+            }
+
             update(personagem);
 
             personagem.getImg().draw(game.getBatch());
