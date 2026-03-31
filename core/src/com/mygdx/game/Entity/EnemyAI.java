@@ -159,8 +159,6 @@ public class EnemyAI {
             enemy.down();
         } else if (r < 0.9) {
             enemy.jump();
-        } else {
-            // 🎲 erro proposital (fica parado)
         }
 
         reset();
