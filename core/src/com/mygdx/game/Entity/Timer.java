@@ -30,9 +30,10 @@ public class Timer {
 
         if (game.getGameState() == GameState.PAUSED) {
             timeString = "PAUSADO";
-        }
-        if (game.getGameState() == GameState.RUNNING) {
-            update();
+        } else {
+            if (game.getGameState() == GameState.RUNNING) {
+                update();
+            }
             int minutes = (int) (stateTime / 60);
             int seconds = (int) (stateTime % 60);
             timeString = String.format("%02d:%02d", minutes, seconds);

@@ -106,7 +106,7 @@ public class SoundController {
         punchHitSound.play();
     }
 
-    public void endGameSound(String namePlayer) {
+    public void endGameSound(String message) {
         Sound ugghSound = game.getGameAssetManager().getSoundUggh();
         Sound end_game = game.getGameAssetManager().getSoundEndGame();
 
@@ -117,7 +117,7 @@ public class SoundController {
             @Override
             public void run() {
                 end_game.play();
-                textFont = namePlayer + " perdeu!";
+                textFont = message;
             }
         }, 1.0f);
     }

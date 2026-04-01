@@ -174,13 +174,21 @@ public class PersonagemController {
 
     public void endGame(Personagem personagemWinner, Personagem personagemLoser) {
         if (game.getGameState() == GameState.RUNNING) {
+            String message;
+
             personagemLoser.setStateTime(0);
             personagemLoser.setPosition(PersonagensPositions.KO);
 
             personagemWinner.setStateTime(0);
             personagemWinner.setPosition(PersonagensPositions.WINNER);
 
-            game.getSoundController().endGameSound(personagemLoser.getName());
+            if (personagemWinner.getName().equals(personagens.getFirst().getName())) {
+                message = "Você venceu!";
+            } else {
+                message = "Você perdeu!";
+            }
+
+            game.getSoundController().endGameSound(message);
             game.setGameState( GameState.END_GAME );
         }
     }

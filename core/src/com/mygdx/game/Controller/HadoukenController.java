@@ -1,7 +1,6 @@
 package com.mygdx.game.Controller;
 
 import com.mygdx.game.Entity.Hadouken;
-import com.mygdx.game.Enum.GameState;
 import com.mygdx.game.Enum.HadoukenPositions;
 import com.mygdx.game.MyGdxGame;
 
